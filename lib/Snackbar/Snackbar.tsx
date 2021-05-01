@@ -1,0 +1,51 @@
+import MatSnackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import React, { useContext, useEffect, useState } from 'react';
+
+import AppContext from '../AppContext';
+
+function Alert(props: any) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+export default function Snackbar() {
+  const [snack, setSnack] = useState<any>({
+    open: false,
+    type: 'info',
+    message: null,
+  });
+  const { snackbarService } = useContext(AppContext);
+
+  useEffect(() => {
+    const sub = snackbarService.subject.subscribe((next: any) => {
+      if (!next) {
+        return;
+      }
+      setSnack({ open: true, ...next });
+    });
+
+    return () => {
+      sub.unsubscribe();
+    };
+  }, []);
+
+  const handleClose = (_event: any, reason: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnack({ open: false, type: 'info', message: null });
+  };
+
+  return (
+    <MatSnackbar
+      open={snack.open}
+      autoHideDuration={6000}
+      onClose={handleClose}
+    >
+      <Alert onClose={handleClose} severity={snack.type}>
+        {snack.message}
+      </Alert>
+    </MatSnackbar>
+  );
+}
