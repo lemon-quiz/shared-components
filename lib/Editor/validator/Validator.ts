@@ -1,5 +1,5 @@
 import { NodeType, ValidatiorOptions } from '../../Interfaces/template.interface';
-import AbstractValidator from './abstractValidator';
+import AbstractValidator from './AbstractValidator';
 
 class Validator extends AbstractValidator {
   private readonly validatorLib;

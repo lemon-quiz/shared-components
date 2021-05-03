@@ -8,7 +8,7 @@
     "cjs",
     "es",
     "typings",
-    "index.d.ts"
+    "typings/index.d.ts"
   ],
   "scripts": {
     "dev": "next dev",
@@ -17,7 +17,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.14.0",
+    "@babel/core": "^7.0.0",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
@@ -48,5 +48,6 @@
     "uuid": "^8.3.2",
     "validator": "^13.6.0"
   },
-  "peerDependencies": {}
+  "peerDependencies": {},
+  "typings": "./typings/index.d.ts"
 }

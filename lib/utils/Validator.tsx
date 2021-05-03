@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import validator from 'validator';
 
 export default class Validators {

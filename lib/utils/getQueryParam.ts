@@ -1,4 +1,4 @@
-export function getCurrentValue(query: any, param: string, prefix?: string): any {
+export default function getQueryParam(query: any, param: string, prefix?: string): any {
   if (prefix && !query[prefix]) {
     query[prefix] = {};
   }

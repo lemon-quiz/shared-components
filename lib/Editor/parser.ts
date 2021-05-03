@@ -5,7 +5,7 @@ import {
   NodeType,
   PageInterface,
 } from '../Interfaces/template.interface';
-import AbstractValidator from './validator/abstractValidator';
+import AbstractValidator from './validator/AbstractValidator';
 
 export default class Parser {
   private initPage: PageInterface = [];
