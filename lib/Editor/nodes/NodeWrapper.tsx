@@ -1,17 +1,17 @@
-import React from 'react';
-import { Box, Button, IconButton } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import {
   AddBox,
   KeyboardArrowDown,
   KeyboardArrowRight,
 } from '@material-ui/icons';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-import { EditorContext, EditorContextInterface } from '../EditorContext';
 import { NodeType } from '../../Interfaces/template.interface';
+import SliderControl from '../controls/SliderControl';
+import { EditorContext, EditorContextInterface } from '../EditorContext';
 import Controls from './Controls';
-import LineNode from './LineNode';
+import NodeRenderer from './NodeRenderer';
 
 export default function NodeWrapper({
   node,
@@ -52,7 +52,7 @@ export default function NodeWrapper({
     // Do not render template nodes
     return (
       <Box display="flex" flexDirection="row">
-        <Box flex="100%" p={1} m={1} bgcolor="grey.300">
+        <Box p={1} m={1} mr={0} bgcolor="grey.300">
           <Button
             onClick={addNode}
             disabled={!state.canAdd}
@@ -63,6 +63,9 @@ export default function NodeWrapper({
           >
             {`Add ${node.name}`}
           </Button>
+        </Box>
+        <Box p={1} m={1} ml={0} bgcolor="grey.300" flexGrow={1}>
+          {node.slider && <SliderControl node={node} path={path} index={index} length={length} />}
         </Box>
       </Box>
     );
@@ -126,17 +129,15 @@ export default function NodeWrapper({
           classNames={{
             enter: 'animated',
             enterActive: 'fadeIn',
-
           }}
         >
-          <div>
-            <LineNode node={node} />
-          </div>
+          <NodeRenderer node={node} />
         </CSSTransition>
       </Box>
       <Box flex="140px" flexShrink={0} p={1} m={1} mr={1} bgcolor="grey.300">
         <Controls node={node} index={index} path={path} length={length} />
       </Box>
     </Box>
+
   );
 }

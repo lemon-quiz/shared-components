@@ -1,16 +1,15 @@
 import {
   FormControl,
-  FormHelperText, Input,
-  InputLabel,
+  FormHelperText, Input, InputLabel,
 } from '@material-ui/core';
 import React, {
   ChangeEvent, useContext, useEffect, useState,
 } from 'react';
 
-import { NodeType } from '../../Interfaces/template.interface';
+import { TextareaInterface } from '../../Interfaces/template.interface';
 import { EditorContext, EditorContextInterface } from '../EditorContext';
 
-export default function LineNode({ node }: { node: NodeType }) {
+export default function TextareaNode({ node }: { node: TextareaInterface }) {
   const pageContext = useContext<EditorContextInterface>(EditorContext);
   const [value, setValue] = useState<any>('');
   const [errors, setErrors] = useState<any>(null);
@@ -50,10 +49,11 @@ export default function LineNode({ node }: { node: NodeType }) {
       <FormControl error={errors !== null} fullWidth>
         <InputLabel htmlFor={`input-${node.uuid}`}>{node.name}</InputLabel>
         <Input
-          id={`input-${node.uuid}`}
           value={value}
           onChange={updateValue}
           aria-describedby={`input-${node.uuid}-error`}
+          multiline
+          rows={20}
           {...config?.input}
         />
         {errors !== null && (

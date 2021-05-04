@@ -1,4 +1,4 @@
-import { NodeType, ValidatiorOptions } from '../../Interfaces/template.interface';
+import { NodeType, ValidatorOptions } from '../../Interfaces/template.interface';
 import AbstractValidator from './AbstractValidator';
 
 class Validator extends AbstractValidator {
@@ -29,8 +29,8 @@ class Validator extends AbstractValidator {
       let rule = validationRule;
       let params = [];
       if (typeof validationRule === 'object') {
-        rule = (validationRule as ValidatiorOptions).rule;
-        params = (validationRule as ValidatiorOptions).params;
+        rule = (validationRule as ValidatorOptions).rule;
+        params = (validationRule as ValidatorOptions).params;
       }
 
       if (typeof this.validatorLib[rule] === 'undefined') {

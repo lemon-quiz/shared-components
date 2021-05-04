@@ -1,20 +1,20 @@
 import {
-  FormControl,
-  FormHelperText, Input,
-  InputLabel,
+  FormControl, FormControlLabel,
+  FormHelperText,
+  Radio,
+  RadioGroup,
 } from '@material-ui/core';
 import React, {
   ChangeEvent, useContext, useEffect, useState,
 } from 'react';
 
-import { NodeType } from '../../Interfaces/template.interface';
+import { RadioInterface } from '../../Interfaces/template.interface';
 import { EditorContext, EditorContextInterface } from '../EditorContext';
 
-export default function LineNode({ node }: { node: NodeType }) {
+export default function RadioNode({ node }: { node: RadioInterface }) {
   const pageContext = useContext<EditorContextInterface>(EditorContext);
   const [value, setValue] = useState<any>('');
   const [errors, setErrors] = useState<any>(null);
-  const [touched, setTouched] = useState<any>(false);
 
   useEffect(() => {
     const {
@@ -40,7 +40,6 @@ export default function LineNode({ node }: { node: NodeType }) {
     pageContext.setValue(node.uuid, newValue, nodeErrors);
     setValue(newValue);
     setErrors(nodeErrors);
-    setTouched(true);
   };
 
   const { config } = node;
@@ -48,24 +47,27 @@ export default function LineNode({ node }: { node: NodeType }) {
   return (
     <>
       <FormControl error={errors !== null} fullWidth>
-        <InputLabel htmlFor={`input-${node.uuid}`}>{node.name}</InputLabel>
-        <Input
-          id={`input-${node.uuid}`}
-          value={value}
-          onChange={updateValue}
-          aria-describedby={`input-${node.uuid}-error`}
-          {...config?.input}
-        />
+        <RadioGroup value={value} onChange={updateValue} {...config?.group}>
+          {node?.options?.map(({ value: optionValue, desc }) => (
+            <FormControlLabel
+              key={optionValue}
+              value={optionValue}
+              control={<Radio {...config?.radio} />}
+              label={desc}
+              {...config?.label}
+            />
+          ))}
+        </RadioGroup>
         {errors !== null && (
-          <FormHelperText id={`input-${node.uuid}-error`}>
-            {Object.keys(errors).map((error) => (
-              <span
-                key={`${node.uuid}-${error}`}
-              >
-                {error}
-              </span>
-            ))}
-          </FormHelperText>
+        <FormHelperText id={`input-${node.uuid}-error`}>
+          {Object.keys(errors).map((error) => (
+            <span
+              key={`${node.uuid}-${error}`}
+            >
+              {error}
+            </span>
+          ))}
+        </FormHelperText>
         )}
       </FormControl>
     </>

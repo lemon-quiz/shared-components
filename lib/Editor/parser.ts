@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -25,7 +26,7 @@ export default class Parser {
    * @param template
    * @param page
    */
-  public loadTemplate(template: PageInterface, page: PageInterface) {
+  public loadTemplate(template: PageInterface, page: PageInterface): void {
     this.initPage = this.parse(template, page);
     this.valueList = {};
   }
@@ -44,18 +45,27 @@ export default class Parser {
    * @param initPage
    * @private
    */
-  private parse(template: PageInterface, page: PageInterface = [], initPage: any[] = []) {
+  private parse(template: PageInterface, page: PageInterface = [], initPage: any[] = []): PageInterface {
     // eslint-disable-next-line consistent-return
     template.forEach((templateNode) => {
       if (templateNode.type === 'complex') {
         const nodes = Parser.findAllNodes(templateNode as ComplexInterface, page);
 
-        nodes.forEach(({ children, ...rest }) => {
+        nodes.forEach(({
+          children,
+          ...rest
+        }) => {
           const newChildren = this.parse(templateNode.children, children ?? []);
 
-          initPage.push({ ...rest, children: newChildren });
+          initPage.push({
+            ...rest,
+            children: newChildren,
+          });
         });
-        initPage.push({ ...templateNode, tuuid: uuidv4() });
+        initPage.push({
+          ...templateNode,
+          tuuid: uuidv4(),
+        });
         return initPage;
       }
 
@@ -65,7 +75,10 @@ export default class Parser {
         initPage.push(dataNode);
       });
 
-      initPage.push({ ...templateNode, tuuid: uuidv4() });
+      initPage.push({
+        ...templateNode,
+        tuuid: uuidv4(),
+      });
     });
 
     return initPage;
@@ -78,18 +91,22 @@ export default class Parser {
    * @private
    */
   private static findAllNodes(node: NodeType, data: PageInterface): NodeType[] {
-    const { name, type } = node;
+    const {
+      name,
+      type,
+    } = node;
 
     const nodes = data.filter((dataNode: NodeType) => (
       dataNode.name === name && dataNode.type === type && dataNode.uuid
-    )).map((dataNode) => ({
-      ...node,
-      ...{
-        value: dataNode.value,
-        uuid: dataNode.uuid,
-        children: dataNode.children,
-      },
-    }));
+    ))
+      .map((dataNode) => ({
+        ...node,
+        ...{
+          value: dataNode.value,
+          uuid: dataNode.uuid,
+          children: dataNode.children,
+        },
+      }));
 
     if (nodes.length > 0) {
       if (!node.multiple) {
@@ -100,7 +117,10 @@ export default class Parser {
     }
 
     if (node.mandatory) {
-      return [{ ...node, uuid: uuidv4() }];
+      return [{
+        ...node,
+        uuid: uuidv4(),
+      }];
     }
 
     return [];
@@ -115,8 +135,14 @@ export default class Parser {
   public moveUp(path: number[], index?: number): PageInterface {
     const clonePath = [...path];
     const nodeIndex = clonePath.pop();
-    const { parent, siblings } = this.getFromPath(clonePath, this.initPage);
-    const { name, type } = siblings[nodeIndex];
+    const {
+      parent,
+      siblings,
+    } = this.getFromPath(clonePath, this.initPage);
+    const {
+      name,
+      type,
+    } = siblings[nodeIndex];
     const canMove = Parser.canMoveUpInternal(siblings, nodeIndex, type, name);
 
     if (canMove) {
@@ -138,9 +164,15 @@ export default class Parser {
   public moveDown(path: number[], index?: number): PageInterface {
     const clonePath = [...path];
     const nodeIndex = clonePath.pop();
-    const { parent, siblings } = this.getFromPath(clonePath, this.initPage);
+    const {
+      parent,
+      siblings,
+    } = this.getFromPath(clonePath, this.initPage);
 
-    const { name, type } = siblings[nodeIndex];
+    const {
+      name,
+      type,
+    } = siblings[nodeIndex];
     const canMove = Parser.canMoveDownInternal(siblings, nodeIndex, type, name);
 
     if (canMove) {
@@ -178,7 +210,11 @@ export default class Parser {
     const { siblings } = this.getFromPath(clonePath, this.initPage);
 
     const {
-      name, type, multiple, uuid, tuuid,
+      name,
+      type,
+      multiple,
+      uuid,
+      tuuid,
     } = siblings[nodeIndex];
 
     if (uuid && !multiple) {
@@ -205,12 +241,16 @@ export default class Parser {
    *
    * @param path
    * @param index
+   * @param amount
    */
-  public addNode(path: number[], index?: number): PageInterface {
+  public addNode(path: number[], index?: number, amount?: number): PageInterface {
     const clonePath = [...path];
     const nodeIndex = clonePath.pop();
-    const { siblings } = this.getFromPath(clonePath, this.initPage);
-    const { name, type } = siblings[nodeIndex];
+    const { siblings } = this.getFromPath([...clonePath], this.initPage);
+    const {
+      name,
+      type,
+    } = siblings[nodeIndex];
     const templateNode = siblings.find((node) => (node.name === name && node.type === type && !node.uuid && node.tuuid));
 
     if (!templateNode) {
@@ -220,28 +260,52 @@ export default class Parser {
       return this.getPage();
     }
 
-    const newNode = this.initNode(templateNode);
-    const insertIndex = typeof index !== 'undefined' ? index + 1 : nodeIndex;
-
-    siblings.splice(insertIndex, 0, newNode);
-
-    return this.getPage();
-  }
-
-  /**
-   *
-   * @param path
-   */
-  public deleteNode(path: number[]): PageInterface {
-    const clonePath = [...path];
-    const nodeIndex = clonePath.pop();
-    const { siblings } = this.getFromPath(clonePath, this.initPage);
-
-    if (!this.canDelete(path)) {
+    if (!amount) {
+      const newNode = this.initNode(templateNode);
+      const insertIndex = typeof index !== 'undefined' ? index + 1 : nodeIndex;
+      siblings.splice(insertIndex, 0, newNode);
       return this.getPage();
     }
 
-    siblings.splice(nodeIndex, 1);
+    // eslint-disable-next-line no-plusplus
+    for (let i = 1; i <= amount; i++) {
+      const newNode = this.initNode(templateNode);
+      const insertIndex = typeof index !== 'undefined' ? index : nodeIndex;
+
+      siblings.splice(insertIndex, 0, newNode);
+    }
+
+    return this.getPage();
+  }
+
+  /**
+   *
+   * @param path
+   * @param amount
+   */
+  public deleteNode(path: number[], amount?: number): PageInterface {
+    const clonePath = [...path];
+    const nodeIndex = clonePath.pop();
+    const { siblings } = this.getFromPath([...clonePath], this.initPage);
+
+    if (!amount) {
+      if (!this.canDelete(path)) {
+        return this.getPage();
+      }
+
+      siblings.splice(nodeIndex, 1);
+      return this.getPage();
+    }
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 1; i <= amount; i++) {
+      if (!this.canDelete([...clonePath, nodeIndex - i])) {
+        return this.getPage();
+      }
+
+      siblings.splice(nodeIndex - i, 1);
+    }
+
     return this.getPage();
   }
 
@@ -249,11 +313,14 @@ export default class Parser {
    *
    * @param path
    */
-  public canDelete(path: number[]) {
+  public canDelete(path: number[]): boolean {
     const clonePath = [...path];
     const nodeIndex = clonePath.pop();
     const { siblings } = this.getFromPath(clonePath, this.initPage);
-    const { type, name } = siblings[nodeIndex];
+    const {
+      type,
+      name,
+    } = siblings[nodeIndex];
     return Parser.canDeleteNodeInternal(siblings, type, name);
   }
 
@@ -280,7 +347,12 @@ export default class Parser {
   private initNode(node: NodeType) {
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      tuuid, uuid, value, ...rest
+      tuuid,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      uuid,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      value,
+      ...rest
     } = node;
 
     const newNode = {
@@ -350,9 +422,9 @@ export default class Parser {
    *
    * @param path
    * @param data
-   * @private
+   * @public
    */
-  private getFromPath(path: number[], data): { parent: null | NodeType, siblings: NodeType[] } {
+  public getFromPath(path: number[], data): { parent: null | NodeType, siblings: NodeType[] } {
     if (path.length === 0) {
       return {
         parent: null,
@@ -403,7 +475,10 @@ export default class Parser {
       value,
       errors,
     };
-    this.initPage = this.updateNode(this.initPage, id, { value, errors });
+    this.initPage = this.updateNode(this.initPage, id, {
+      value,
+      errors,
+    });
   }
 
   /**
@@ -414,7 +489,10 @@ export default class Parser {
    * @param defaultErrors
    */
   public getValue(id, defaultValue, defaultErrors): { value: any, errors: any } {
-    return this.valueList?.[id] ?? { value: defaultValue, errors: defaultErrors };
+    return this.valueList?.[id] ?? {
+      value: defaultValue,
+      errors: defaultErrors,
+    };
   }
 
   /**
@@ -427,7 +505,10 @@ export default class Parser {
    */
   private updateNode(data: NodeType[], updateUuid: string, values: { [key: string]: any }): NodeType[] {
     return data.map((node) => {
-      const { uuid, children } = node;
+      const {
+        uuid,
+        children,
+      } = node;
 
       if (uuid === updateUuid) {
         return ({ ...node, ...values });
@@ -468,15 +549,25 @@ export default class Parser {
 
       const errors = this.validator.checkInput(node, node.value);
       if (errors) {
-        this.errorsList[node.uuid] = { uuid: node.uuid, errors };
+        this.errorsList[node.uuid] = {
+          uuid: node.uuid,
+          errors,
+        };
       }
 
       if (node.children) {
         const children = this.validateNodes(node.children);
-        return ({ ...node, errors, children });
+        return ({
+          ...node,
+          errors,
+          children,
+        });
       }
 
-      return ({ ...node, errors });
+      return ({
+        ...node,
+        errors,
+      });
     });
   }
 
@@ -489,12 +580,46 @@ export default class Parser {
   public validateNode(node: NodeType, value?: any): any {
     const errors = this.validator.checkInput(node, value ?? node.value);
     if (errors) {
-      this.errorsList[node.uuid] = { uuid: node.uuid, errors };
+      this.errorsList[node.uuid] = {
+        uuid: node.uuid,
+        errors,
+      };
 
       return errors;
     }
 
     delete this.errorsList[node.uuid];
     return null;
+  }
+
+  /**
+   *
+   * @param path
+   */
+  public getSiblings(path: number[]): NodeType[] | [] {
+    const clonePath = [...path];
+    const nodeIndex = clonePath.pop();
+    const { siblings } = this.getFromPath(clonePath, this.initPage);
+    const {
+      name,
+      type,
+    } = siblings[nodeIndex];
+    return siblings.filter((node) => (node.name === name && node.type === type && node.uuid && !node.tuuid));
+  }
+
+  public getHash(seed = 0) {
+    const str = JSON.stringify(this.initPage);
+
+    let h1 = 0xdeadbeef ^ seed;
+    let h2 = 0x41c6ce57 ^ seed;
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0, ch; i < str.length; i++) {
+      ch = str.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
   }
 }
