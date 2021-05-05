@@ -2,8 +2,7 @@ import { PageInterface } from '../lib';
 
 const page: PageInterface = [
   {
-    type: 'line',
-    name: 'page_title',
+    type: 'checkbox', name: 'page_title',
   },
 ];
 

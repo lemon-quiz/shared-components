@@ -67,7 +67,7 @@ export default function CheckboxNode({ node }: { node: CheckboxInterface }) {
 
   const { config } = node;
 
-  const options = () => (node.options || [{ value: true, desc: node.name }]).map((option) => (
+  const options = () => (node.options || [{ value: false, desc: node.name }]).map((option) => (
     <FormControlLabel
       key={`${node.name}-${String(option.value)}`}
       control={<Checkbox checked={valueChecked(option.value)} onChange={updateValue} name={option.desc} value={option.value} {...config?.checkbox} />}

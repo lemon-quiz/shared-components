@@ -6,7 +6,7 @@ import TinymceNode from '../components/editor/TinymceNode';
 import {
   Editor, PageInterface, Parser, Validator,
 } from '../lib';
-import homepageTemplate from '../templates/homepage.template';
+import homepageTemplate from '../templates/single-node.template';
 
 const parser = new Parser(
   new Validator(validatorLib),

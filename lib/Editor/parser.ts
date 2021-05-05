@@ -321,6 +321,7 @@ export default class Parser {
       type,
       name,
     } = siblings[nodeIndex];
+
     return Parser.canDeleteNodeInternal(siblings, type, name);
   }
 
@@ -334,6 +335,10 @@ export default class Parser {
   private static canDeleteNodeInternal(siblings, type, name): boolean {
     const filtered = siblings.filter((node) => node.name === name && node.type === type && typeof node.uuid !== 'undefined');
     const templateNode = siblings.find((node) => node.name === name && node.type === type && typeof node.tuuid !== 'undefined');
+
+    if (!templateNode.mandatory) {
+      return true;
+    }
 
     return templateNode.mandatory && filtered.length > 1;
   }
@@ -358,7 +363,6 @@ export default class Parser {
     const newNode = {
       ...rest,
       uuid: uuidv4(),
-      value: uuidv4(),
     };
 
     return this.parse([rest], [newNode])[0];

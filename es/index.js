@@ -161,7 +161,7 @@ function CheckboxNode(_a) {
         return !!value;
     };
     var config = node.config;
-    var options = function () { return (node.options || [{ value: true, desc: node.name }]).map(function (option) { return (React__default.createElement(FormControlLabel, __assign({ key: node.name + "-" + String(option.value), control: React__default.createElement(Checkbox, __assign({ checked: valueChecked(option.value), onChange: updateValue, name: option.desc, value: option.value }, config === null || config === void 0 ? void 0 : config.checkbox)), label: option.desc }, config === null || config === void 0 ? void 0 : config.label))); }); };
+    var options = function () { return (node.options || [{ value: false, desc: node.name }]).map(function (option) { return (React__default.createElement(FormControlLabel, __assign({ key: node.name + "-" + String(option.value), control: React__default.createElement(Checkbox, __assign({ checked: valueChecked(option.value), onChange: updateValue, name: option.desc, value: option.value }, config === null || config === void 0 ? void 0 : config.checkbox)), label: option.desc }, config === null || config === void 0 ? void 0 : config.label))); }); };
     return (React__default.createElement(React__default.Fragment, null,
         React__default.createElement(FormControl, { error: errors !== null, fullWidth: true },
             React__default.createElement(FormGroup, null, options()),
@@ -668,6 +668,9 @@ var Parser = /** @class */ (function () {
     Parser.canDeleteNodeInternal = function (siblings, type, name) {
         var filtered = siblings.filter(function (node) { return node.name === name && node.type === type && typeof node.uuid !== 'undefined'; });
         var templateNode = siblings.find(function (node) { return node.name === name && node.type === type && typeof node.tuuid !== 'undefined'; });
+        if (!templateNode.mandatory) {
+            return true;
+        }
         return templateNode.mandatory && filtered.length > 1;
     };
     /**
@@ -683,7 +686,7 @@ var Parser = /** @class */ (function () {
         node.uuid; 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         node.value; var rest = __rest(node, ["tuuid", "uuid", "value"]);
-        var newNode = __assign(__assign({}, rest), { uuid: v4(), value: v4() });
+        var newNode = __assign(__assign({}, rest), { uuid: v4() });
         return this.parse([rest], [newNode])[0];
     };
     /**
