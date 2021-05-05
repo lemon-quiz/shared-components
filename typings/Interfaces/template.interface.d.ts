@@ -1,6 +1,9 @@
-export interface ValidatiorOptions {
+export interface ValidatorOptions {
     rule: string;
     params: any[];
+}
+export interface InputConfig {
+    [key: string]: any;
 }
 export interface NodeInterface {
     type: string;
@@ -11,21 +14,36 @@ export interface NodeInterface {
     uuid?: string;
     tuuid?: string;
     errors?: any;
-    validator?: string | ValidatiorOptions | Array<string | ValidatiorOptions>;
+    validator?: string | ValidatorOptions | Array<string | ValidatorOptions>;
     [key: string]: any;
+    config?: InputConfig;
+    slider?: boolean;
+}
+export interface CustomNodeInterface extends NodeInterface {
+}
+export interface CustomNodesInterface {
+    [key: string]: CustomNodeInterface;
 }
 export interface LineInterface extends NodeInterface {
 }
-export interface RadioNodeOption {
+export interface TextareaInterface extends NodeInterface {
+}
+export interface NodeOption {
     value: string;
     desc: string;
 }
-export interface RadioNodeOptions extends Array<RadioNodeOption> {
+export interface NodeOptions extends Array<NodeOption> {
 }
 export interface RadioInterface extends NodeInterface {
-    options?: RadioNodeOptions;
+    options: NodeOptions;
 }
-export interface ChildrenInterface extends Array<LineInterface | RadioInterface | ComplexInterface> {
+export interface CheckboxInterface extends NodeInterface {
+    options?: NodeOptions;
+}
+export interface SelectBoxInterface extends NodeInterface {
+    options: NodeOptions;
+}
+export interface ChildrenInterface extends Array<NodeType> {
 }
 export interface ComplexInterface extends NodeInterface {
     type: 'complex';
@@ -33,4 +51,4 @@ export interface ComplexInterface extends NodeInterface {
 }
 export interface PageInterface extends Array<ComplexInterface | LineInterface | RadioInterface> {
 }
-export declare type NodeType = LineInterface | RadioInterface | ComplexInterface;
+export declare type NodeType = LineInterface | RadioInterface | ComplexInterface | SelectBoxInterface | CheckboxInterface | TextareaInterface | CustomNodeInterface;

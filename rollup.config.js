@@ -16,7 +16,7 @@ const baseConfig = {
     nodeResolve(),
     typescript({
       useTsconfigDeclarationDir: true,
-      tsconfigOverride: { compilerOptions: { jsx: 'react' } },
+      tsconfig: 'tsconfig-rollup.json',
     }),
     commonjs({ extensions: ['.js', '.ts', '.tsx'] }), // the ".ts" extension is required
   ],

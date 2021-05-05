@@ -64,13 +64,15 @@ export default class Parser {
      *
      * @param path
      * @param index
+     * @param amount
      */
-    addNode(path: number[], index?: number): PageInterface;
+    addNode(path: number[], index?: number, amount?: number): PageInterface;
     /**
      *
      * @param path
+     * @param amount
      */
-    deleteNode(path: number[]): PageInterface;
+    deleteNode(path: number[], amount?: number): PageInterface;
     /**
      *
      * @param path
@@ -127,9 +129,12 @@ export default class Parser {
      *
      * @param path
      * @param data
-     * @private
+     * @public
      */
-    private getFromPath;
+    getFromPath(path: number[], data: any): {
+        parent: null | NodeType;
+        siblings: NodeType[];
+    };
     /**
      * Probably not needed
      *
@@ -184,4 +189,10 @@ export default class Parser {
      * @param value
      */
     validateNode(node: NodeType, value?: any): any;
+    /**
+     *
+     * @param path
+     */
+    getSiblings(path: number[]): NodeType[] | [];
+    getHash(seed?: number): number;
 }

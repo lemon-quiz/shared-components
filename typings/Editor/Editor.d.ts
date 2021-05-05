@@ -1,8 +1,12 @@
 import React from 'react';
+import { PageInterface } from '../Interfaces/template.interface';
 import Parser from './parser';
 interface EditorInterface {
     parser: Parser;
-    render: typeof React.Component;
+    page: PageInterface;
+    customNodes?: {
+        [key: string]: React.JSXElementConstructor<any>;
+    };
 }
-export default function Editor({ parser, render: ButtonBar, }: EditorInterface): JSX.Element;
+export default function Editor({ parser, page, customNodes, }: EditorInterface): JSX.Element;
 export {};
