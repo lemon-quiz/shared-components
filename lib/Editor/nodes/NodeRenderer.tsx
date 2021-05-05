@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 import {
   CheckboxInterface, CustomNodeInterface, NodeType, RadioInterface, SelectBoxInterface, TextareaInterface,
@@ -19,6 +19,10 @@ export default function NodeRenderer({ node }: NodeRendererInterface) {
   const { type } = node;
   const context = useContext<EditorContextInterface>(EditorContext);
 
+  if (context.hasCustomNode(type)) {
+    return <CustomNode node={node as CustomNodeInterface} />;
+  }
+
   if (type === 'line') {
     return <LineNode node={node} />;
   }
@@ -37,10 +41,6 @@ export default function NodeRenderer({ node }: NodeRendererInterface) {
 
   if (type === 'textarea') {
     return <TextareaNode node={node as TextareaInterface} />;
-  }
-
-  if (context.hasCustomNode(type)) {
-    return <CustomNode node={node as CustomNodeInterface} />;
   }
 
   return (<div>Not implemented!</div>);

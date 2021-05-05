@@ -1,5 +1,5 @@
 import { Slider } from '@material-ui/core';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { NodeInterface } from '../../Interfaces/template.interface';
 import { EditorContext, EditorContextInterface } from '../EditorContext';
@@ -12,7 +12,7 @@ interface SliderControlInterface {
 }
 
 function valuetext(value: number) {
-  return `${value}°C`;
+  return `${value}`;
 }
 
 export default function SliderControl({
