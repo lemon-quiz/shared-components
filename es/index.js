@@ -158,7 +158,7 @@ function CheckboxNode(_a) {
         if (((_a = node.options) === null || _a === void 0 ? void 0 : _a.length) > 0) {
             return (_b = value[name]) !== null && _b !== void 0 ? _b : false;
         }
-        return value;
+        return !!value;
     };
     var config = node.config;
     var options = function () { return (node.options || [{ value: true, desc: node.name }]).map(function (option) { return (React__default.createElement(FormControlLabel, __assign({ key: node.name + "-" + String(option.value), control: React__default.createElement(Checkbox, __assign({ checked: valueChecked(option.value), onChange: updateValue, name: option.desc, value: option.value }, config === null || config === void 0 ? void 0 : config.checkbox)), label: option.desc }, config === null || config === void 0 ? void 0 : config.label))); }); };

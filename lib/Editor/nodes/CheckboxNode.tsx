@@ -62,7 +62,7 @@ export default function CheckboxNode({ node }: { node: CheckboxInterface }) {
       return value[name] ?? false;
     }
 
-    return value;
+    return !!value;
   };
 
   const { config } = node;
