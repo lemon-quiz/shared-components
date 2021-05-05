@@ -453,7 +453,7 @@ function Editor(_a) {
     var setValue = function (id, value, errors) { return parser.setValue(id, value, errors); };
     var getValue = function (id, value, errors) { return parser.getValue(id, value, errors); };
     var validateNode = function (node, value) { return parser.validateNode(node, value); };
-    var hasCustomNode = function (type) { return !!customNodes[type]; };
+    var hasCustomNode = function (type) { return !!(customNodes === null || customNodes === void 0 ? void 0 : customNodes[type]); };
     var getCustomNode = function (type) { return customNodes[type]; };
     var getSiblings = function (path) { return parser.getSiblings(path); };
     return (React__default['default'].createElement(EditorContext.Provider, { value: {

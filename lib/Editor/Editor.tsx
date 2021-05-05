@@ -49,7 +49,7 @@ export default function Editor({
   const setValue = (id: string, value: any, errors?: any): void => parser.setValue(id, value, errors);
   const getValue = (id: string, value: any, errors: any): any => parser.getValue(id, value, errors);
   const validateNode = (node: NodeType, value?: any): any => parser.validateNode(node, value);
-  const hasCustomNode = (type: string): boolean => !!customNodes[type];
+  const hasCustomNode = (type: string): boolean => !!customNodes?.[type];
   const getCustomNode = (type: string): React.JSXElementConstructor<any> => customNodes[type];
   const getSiblings = (path) => parser.getSiblings(path);
 
