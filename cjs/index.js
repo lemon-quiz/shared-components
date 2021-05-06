@@ -1386,6 +1386,7 @@ exports.ColumnBoolean = ColumnBoolean;
 exports.ColumnDate = ColumnDate;
 exports.ConfirmDialog = ConfirmDialog;
 exports.Controls = Controls;
+exports.CustomNode = CustomNode;
 exports.Editor = Editor;
 exports.EditorContext = EditorContext;
 exports.FormResponse = FormResponse;

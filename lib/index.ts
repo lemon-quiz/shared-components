@@ -3,6 +3,7 @@ import ConfirmDialog from './Dialog/ConfirmDialog';
 import Editor from './Editor/Editor';
 import { EditorContext, EditorContextInterface } from './Editor/EditorContext';
 import Controls from './Editor/nodes/Controls';
+import CustomNode from './Editor/nodes/CustomNode';
 import LineNode from './Editor/nodes/LineNode';
 import NodeWrapper from './Editor/nodes/NodeWrapper';
 import Parser from './Editor/parser';
@@ -16,7 +17,7 @@ import { ServicesInterface } from './Interfaces/services.interface';
 import {
   ChildrenInterface,
   ComplexInterface,
-  LineInterface,
+  CustomNodeInterface, LineInterface,
   NodeInterface,
   NodeOption,
   NodeOptions,
@@ -69,6 +70,7 @@ export {
   getValue,
   setQueryParam,
   Editor,
+  CustomNode,
 };
 
 export type {
@@ -89,4 +91,5 @@ export type {
   ComplexInterface,
   PageInterface,
   NodeType,
+  CustomNodeInterface,
 };

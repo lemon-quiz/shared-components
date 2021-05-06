@@ -1338,5 +1338,5 @@ function getQueryParam(query, param, prefix) {
     return prefix ? query[prefix + "_" + param] : query[param];
 }
 
-export { AbstractValidator, AppContext, AppTable, AuthGuard, Column, ColumnActions, ColumnBoolean, ColumnDate, ConfirmDialog, Controls, Editor, EditorContext, FormResponse, Header, HeaderSearch, LineNode, NodeWrapper, Parser, Pending, RoleGuard, Snackbar, Sortable, Validator, getPrefixedValues, getQueryParam, getValue, setQueryParam };
+export { AbstractValidator, AppContext, AppTable, AuthGuard, Column, ColumnActions, ColumnBoolean, ColumnDate, ConfirmDialog, Controls, CustomNode, Editor, EditorContext, FormResponse, Header, HeaderSearch, LineNode, NodeWrapper, Parser, Pending, RoleGuard, Snackbar, Sortable, Validator, getPrefixedValues, getQueryParam, getValue, setQueryParam };
 //# sourceMappingURL=index.js.map
