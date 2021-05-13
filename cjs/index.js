@@ -562,7 +562,7 @@ var Parser = /** @class */ (function () {
             nodes.forEach(function (dataNode) {
                 staticPage.push(dataNode);
             });
-            staticPage.push(tslib.__assign(tslib.__assign({}, templateNode), { tuuid: uuid.v4() }));
+            staticPage.push(tslib.__assign(tslib.__assign({}, templateNode), { display: !templateNode.show, tuuid: uuid.v4() }));
         });
         return staticPage;
     };
@@ -612,8 +612,8 @@ var Parser = /** @class */ (function () {
     Parser.prototype.updateNode = function (data, updateUuid, values) {
         var _this = this;
         return data.map(function (node) {
-            var uuid = node.uuid, children = node.children;
-            if (uuid === updateUuid) {
+            var uuid = node.uuid, tuuid = node.tuuid, children = node.children;
+            if (uuid === updateUuid || tuuid === updateUuid) {
                 return (tslib.__assign(tslib.__assign({}, node), values));
             }
             if (Array.isArray(children)) {
@@ -658,7 +658,13 @@ var Parser = /** @class */ (function () {
             return;
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        params.uuid; params.tuuid; params.name; params.type; var rest = tslib.__rest(params, ["uuid", "tuuid", "name", "type"]);
+        params.uuid; 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        params.tuuid; 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        params.name; 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        params.type; var rest = tslib.__rest(params, ["uuid", "tuuid", "name", "type"]);
         var merged = tslib.__assign(tslib.__assign({}, this.nodesById[id].getValue()), rest);
         this.nodesById[id].next(merged);
     };
@@ -1095,15 +1101,21 @@ var Parser = /** @class */ (function () {
         var _this = this;
         if (path === void 0) { path = []; }
         page.forEach(function (node, index) {
+            var _a;
             if (node.children) {
                 _this.searchShowHide(node.children, tslib.__spreadArray(tslib.__spreadArray([], path), [index]));
             }
-            if (node.show) {
-                var _a = Parser.parseEquation(node.show), field = _a[0], value_1 = _a[1], type_1 = _a[2];
+            if (typeof node.show !== 'undefined') {
+                var _b = Parser.parseEquation(node.show), field = _b[0], value_1 = _b[1], type_1 = _b[2];
                 var ids = _this.getEquationNodeIds(field, path);
+                _this.setParams((_a = node.uuid) !== null && _a !== void 0 ? _a : node.tuuid, {
+                    value: node.value,
+                    errors: node.errors,
+                    display: node.display,
+                });
                 ids.forEach(function (id) {
-                    _this.setValue(node.uuid, node.value, node.errors);
-                    _this.subscribe(node.uuid, id, value_1, type_1);
+                    var _a;
+                    _this.subscribe(((_a = node.uuid) !== null && _a !== void 0 ? _a : node.tuuid), id, value_1, type_1);
                 });
             }
         });

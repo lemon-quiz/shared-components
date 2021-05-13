@@ -119,6 +119,7 @@ export default class Parser {
 
       staticPage.push({
         ...templateNode,
+        display: !templateNode.show,
         tuuid: uuidv4(),
       });
     });
@@ -192,10 +193,11 @@ export default class Parser {
     return data.map((node) => {
       const {
         uuid,
+        tuuid,
         children,
       } = node;
 
-      if (uuid === updateUuid) {
+      if (uuid === updateUuid || tuuid === updateUuid) {
         return ({ ...node, ...values });
       }
 
@@ -258,8 +260,11 @@ export default class Parser {
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       uuid,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       tuuid,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       name,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       type,
       ...rest
     } = params;
@@ -831,13 +836,17 @@ export default class Parser {
         this.searchShowHide(node.children, [...path, index]);
       }
 
-      if (node.show) {
+      if (typeof node.show !== 'undefined') {
         const [field, value, type] = Parser.parseEquation(node.show);
         const ids = this.getEquationNodeIds(field, path);
+        this.setParams(node.uuid ?? node.tuuid, {
+          value: node.value,
+          errors: node.errors,
+          display: node.display,
+        });
 
         ids.forEach((id: string) => {
-          this.setValue(node.uuid, node.value, node.errors);
-          this.subscribe(node.uuid, id, value, type);
+          this.subscribe((node.uuid ?? node.tuuid), id, value, type);
         });
       }
     });
