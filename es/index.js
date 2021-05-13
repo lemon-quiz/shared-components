@@ -517,7 +517,7 @@ var Parser = /** @class */ (function () {
                     var newChildren = _this.parse(templateNode.children, children !== null && children !== void 0 ? children : [], __spreadArray(__spreadArray([], path), [index]));
                     staticPage.push(__assign(__assign({}, rest), { children: newChildren }));
                 });
-                staticPage.push(__assign(__assign({}, templateNode), { tuuid: v4() }));
+                staticPage.push(__assign(__assign({}, templateNode), { display: !templateNode.show, tuuid: v4() }));
                 return staticPage;
             }
             var nodes = _this.findAllNodes(templateNode, page);
@@ -542,7 +542,7 @@ var Parser = /** @class */ (function () {
             value: dataNode.value,
             uuid: dataNode.uuid,
             children: dataNode.children,
-            display: (!(node.show || node.hide)),
+            display: !node.show,
         })); });
         if (nodes.length > 0) {
             if (!node.multiple) {
@@ -557,7 +557,7 @@ var Parser = /** @class */ (function () {
         }
         if (node.mandatory) {
             var uuid = v4();
-            var newNode = __assign(__assign({}, node), { display: (!(node.show || node.hide)), uuid: uuid });
+            var newNode = __assign(__assign({}, node), { display: !node.show, uuid: uuid });
             this.nodesById[newNode.uuid] = null;
             return [newNode];
         }

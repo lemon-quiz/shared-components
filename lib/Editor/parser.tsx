@@ -105,6 +105,7 @@ export default class Parser {
         });
         staticPage.push({
           ...templateNode,
+          display: !templateNode.show,
           tuuid: uuidv4(),
         });
         return staticPage;
@@ -146,7 +147,7 @@ export default class Parser {
           value: dataNode.value,
           uuid: dataNode.uuid,
           children: dataNode.children,
-          display: (!(node.show || node.hide)),
+          display: !node.show,
         },
       }));
 
@@ -169,7 +170,7 @@ export default class Parser {
       const uuid = uuidv4();
       const newNode: NodeType = {
         ...node,
-        display: (!(node.show || node.hide)),
+        display: !node.show,
         uuid,
       };
       this.nodesById[newNode.uuid] = null;
