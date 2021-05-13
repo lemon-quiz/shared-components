@@ -603,7 +603,8 @@ var Parser = /** @class */ (function () {
             });
             return;
         }
-        var merged = __assign(__assign({}, this.nodesById[id].getValue()), { value: value, errors: errors });
+        var merged = __assign(__assign({}, this.nodesById[id].getValue()), { value: value,
+            errors: errors });
         this.nodesById[id].next(merged);
     };
     /**
@@ -987,41 +988,47 @@ var Parser = /** @class */ (function () {
         return siblings.filter(function (node) { return (node.name === name && node.type === type && node.uuid && !node.tuuid); });
     };
     Parser.parseEquation = function (equation) {
-        if (equation.includes('===')) {
-            var _a = equation.split('==='), field = _a[0], value = _a[1];
+        if (equation.includes(Parser.EQ_STRICT_EQUAL)) {
+            var _a = equation.split(Parser.EQ_STRICT_EQUAL), field = _a[0], value = _a[1];
             field = field.trim();
             value = value.trim();
             return [field, value, Parser.EQ_STRICT_EQUAL];
         }
-        if (equation.includes('!==')) {
-            var _b = equation.split('!=='), field = _b[0], value = _b[1];
+        if (equation.includes(Parser.EQ_STRICT_NOT_EQUAL)) {
+            var _b = equation.split(Parser.EQ_STRICT_NOT_EQUAL), field = _b[0], value = _b[1];
             field = field.trim();
             value = value.trim();
             return [field, value, Parser.EQ_STRICT_NOT_EQUAL];
         }
-        if (equation.includes('>=')) {
-            var _c = equation.split('>='), field = _c[0], value = _c[1];
+        if (equation.includes(Parser.EQ_GTE_OR_EQUAL)) {
+            var _c = equation.split(Parser.EQ_GTE_OR_EQUAL), field = _c[0], value = _c[1];
             field = field.trim();
             value = value.trim();
             return [field, value, Parser.EQ_GTE_OR_EQUAL];
         }
-        if (equation.includes('>')) {
-            var _d = equation.split('>'), field = _d[0], value = _d[1];
+        if (equation.includes(Parser.EQ_GTE)) {
+            var _d = equation.split(Parser.EQ_GTE), field = _d[0], value = _d[1];
             field = field.trim();
             value = value.trim();
             return [field, value, Parser.EQ_GTE];
         }
-        if (equation.includes('<=')) {
-            var _e = equation.split('<='), field = _e[0], value = _e[1];
+        if (equation.includes(Parser.EQ_LTE_OR_EQUAL)) {
+            var _e = equation.split(Parser.EQ_LTE_OR_EQUAL), field = _e[0], value = _e[1];
             field = field.trim();
             value = value.trim();
             return [field, value, Parser.EQ_LTE_OR_EQUAL];
         }
-        if (equation.includes('<')) {
-            var _f = equation.split('<'), field = _f[0], value = _f[1];
+        if (equation.includes(Parser.EQ_LTE)) {
+            var _f = equation.split(Parser.EQ_LTE), field = _f[0], value = _f[1];
             field = field.trim();
             value = value.trim();
             return [field, value, Parser.EQ_LTE];
+        }
+        if (equation.includes(this.EQ_IN)) {
+            var _g = equation.split(this.EQ_IN), field = _g[0], value = _g[1];
+            field = field.trim();
+            value = value.trim();
+            return [field, value, Parser.EQ_IN];
         }
         return [null, null, null];
     };
@@ -1074,24 +1081,28 @@ var Parser = /** @class */ (function () {
                 .subscribe(function () {
                 var currentDisplay = _this.nodesById[nodeId].getValue().display;
                 var hasMatch = __spreadArray(__spreadArray([], Object.keys(_this.subscriptions[nodeId])), [fieldId]).filter(function (id) {
-                    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+                    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w;
+                    if (type === Parser.EQ_IN) {
+                        return Parser.explodeValue(value)
+                            .includes((_c = (_b = (_a = _this.nodesById) === null || _a === void 0 ? void 0 : _a[id]) === null || _b === void 0 ? void 0 : _b.getValue()) === null || _c === void 0 ? void 0 : _c.value);
+                    }
                     if (type === Parser.EQ_STRICT_EQUAL) {
-                        return ((_c = (_b = (_a = _this.nodesById) === null || _a === void 0 ? void 0 : _a[id]) === null || _b === void 0 ? void 0 : _b.getValue()) === null || _c === void 0 ? void 0 : _c.value) === Parser.convertValue(value);
+                        return ((_f = (_e = (_d = _this.nodesById) === null || _d === void 0 ? void 0 : _d[id]) === null || _e === void 0 ? void 0 : _e.getValue()) === null || _f === void 0 ? void 0 : _f.value) === Parser.convertValue(value);
                     }
                     if (type === Parser.EQ_STRICT_NOT_EQUAL) {
-                        return ((_f = (_e = (_d = _this.nodesById) === null || _d === void 0 ? void 0 : _d[id]) === null || _e === void 0 ? void 0 : _e.getValue()) === null || _f === void 0 ? void 0 : _f.value) !== Parser.convertValue(value);
+                        return ((_j = (_h = (_g = _this.nodesById) === null || _g === void 0 ? void 0 : _g[id]) === null || _h === void 0 ? void 0 : _h.getValue()) === null || _j === void 0 ? void 0 : _j.value) !== Parser.convertValue(value);
                     }
                     if (type === Parser.EQ_GTE_OR_EQUAL) {
-                        return Number((_j = (_h = (_g = _this.nodesById) === null || _g === void 0 ? void 0 : _g[id]) === null || _h === void 0 ? void 0 : _h.getValue()) === null || _j === void 0 ? void 0 : _j.value) >= Number(value);
+                        return Number((_m = (_l = (_k = _this.nodesById) === null || _k === void 0 ? void 0 : _k[id]) === null || _l === void 0 ? void 0 : _l.getValue()) === null || _m === void 0 ? void 0 : _m.value) >= Number(value);
                     }
                     if (type === Parser.EQ_GTE) {
-                        return Number((_m = (_l = (_k = _this.nodesById) === null || _k === void 0 ? void 0 : _k[id]) === null || _l === void 0 ? void 0 : _l.getValue()) === null || _m === void 0 ? void 0 : _m.value) > Number(value);
+                        return Number((_q = (_p = (_o = _this.nodesById) === null || _o === void 0 ? void 0 : _o[id]) === null || _p === void 0 ? void 0 : _p.getValue()) === null || _q === void 0 ? void 0 : _q.value) > Number(value);
                     }
                     if (type === Parser.EQ_LTE_OR_EQUAL) {
-                        return Number((_q = (_p = (_o = _this.nodesById) === null || _o === void 0 ? void 0 : _o[id]) === null || _p === void 0 ? void 0 : _p.getValue()) === null || _q === void 0 ? void 0 : _q.value) <= Number(value);
+                        return Number((_t = (_s = (_r = _this.nodesById) === null || _r === void 0 ? void 0 : _r[id]) === null || _s === void 0 ? void 0 : _s.getValue()) === null || _t === void 0 ? void 0 : _t.value) <= Number(value);
                     }
                     if (type === Parser.EQ_LTE) {
-                        return Number((_t = (_s = (_r = _this.nodesById) === null || _r === void 0 ? void 0 : _r[id]) === null || _s === void 0 ? void 0 : _s.getValue()) === null || _t === void 0 ? void 0 : _t.value) < Number(value);
+                        return Number((_w = (_v = (_u = _this.nodesById) === null || _u === void 0 ? void 0 : _u[id]) === null || _v === void 0 ? void 0 : _v.getValue()) === null || _w === void 0 ? void 0 : _w.value) < Number(value);
                     }
                     return false;
                 });
@@ -1118,6 +1129,13 @@ var Parser = /** @class */ (function () {
         }
         return value;
     };
+    Parser.explodeValue = function (value) {
+        return value
+            .replace('\\,', '\\;')
+            .split(',')
+            .map(function (val) { return val.replace('\\;', ','); });
+    };
+    Parser.EQ_IN = ' in ';
     Parser.EQ_STRICT_EQUAL = '===';
     Parser.EQ_STRICT_NOT_EQUAL = '!==';
     Parser.EQ_GTE = '>';

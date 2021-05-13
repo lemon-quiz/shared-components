@@ -8,6 +8,8 @@ import { ComplexInterface, NodeType, PageInterface } from '../Interfaces/templat
 import AbstractValidator from './validator/AbstractValidator';
 
 export default class Parser {
+  static EQ_IN = ' in ';
+
   static EQ_STRICT_EQUAL = '===';
 
   static EQ_STRICT_NOT_EQUAL = '!==';
@@ -229,7 +231,11 @@ export default class Parser {
       return;
     }
 
-    const merged = { ...this.nodesById[id].getValue(), value, errors };
+    const merged = {
+      ...this.nodesById[id].getValue(),
+      value,
+      errors,
+    };
     this.nodesById[id].next(merged);
   }
 
@@ -250,7 +256,11 @@ export default class Parser {
 
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      uuid, tuuid, name, type, ...rest
+      uuid,
+      tuuid,
+      name,
+      type,
+      ...rest
     } = params;
 
     const merged = { ...this.nodesById[id].getValue(), ...rest };
@@ -724,8 +734,8 @@ export default class Parser {
   }
 
   private static parseEquation(equation: string) {
-    if (equation.includes('===')) {
-      let [field, value] = equation.split('===');
+    if (equation.includes(Parser.EQ_STRICT_EQUAL)) {
+      let [field, value] = equation.split(Parser.EQ_STRICT_EQUAL);
 
       field = field.trim();
       value = value.trim();
@@ -733,8 +743,8 @@ export default class Parser {
       return [field, value, Parser.EQ_STRICT_EQUAL];
     }
 
-    if (equation.includes('!==')) {
-      let [field, value] = equation.split('!==');
+    if (equation.includes(Parser.EQ_STRICT_NOT_EQUAL)) {
+      let [field, value] = equation.split(Parser.EQ_STRICT_NOT_EQUAL);
 
       field = field.trim();
       value = value.trim();
@@ -742,8 +752,8 @@ export default class Parser {
       return [field, value, Parser.EQ_STRICT_NOT_EQUAL];
     }
 
-    if (equation.includes('>=')) {
-      let [field, value] = equation.split('>=');
+    if (equation.includes(Parser.EQ_GTE_OR_EQUAL)) {
+      let [field, value] = equation.split(Parser.EQ_GTE_OR_EQUAL);
 
       field = field.trim();
       value = value.trim();
@@ -751,8 +761,8 @@ export default class Parser {
       return [field, value, Parser.EQ_GTE_OR_EQUAL];
     }
 
-    if (equation.includes('>')) {
-      let [field, value] = equation.split('>');
+    if (equation.includes(Parser.EQ_GTE)) {
+      let [field, value] = equation.split(Parser.EQ_GTE);
 
       field = field.trim();
       value = value.trim();
@@ -760,8 +770,8 @@ export default class Parser {
       return [field, value, Parser.EQ_GTE];
     }
 
-    if (equation.includes('<=')) {
-      let [field, value] = equation.split('<=');
+    if (equation.includes(Parser.EQ_LTE_OR_EQUAL)) {
+      let [field, value] = equation.split(Parser.EQ_LTE_OR_EQUAL);
 
       field = field.trim();
       value = value.trim();
@@ -769,13 +779,21 @@ export default class Parser {
       return [field, value, Parser.EQ_LTE_OR_EQUAL];
     }
 
-    if (equation.includes('<')) {
-      let [field, value] = equation.split('<');
+    if (equation.includes(Parser.EQ_LTE)) {
+      let [field, value] = equation.split(Parser.EQ_LTE);
 
       field = field.trim();
       value = value.trim();
 
       return [field, value, Parser.EQ_LTE];
+    }
+
+    if (equation.includes(this.EQ_IN)) {
+      let [field, value] = equation.split(this.EQ_IN);
+      field = field.trim();
+      value = value.trim();
+
+      return [field, value, Parser.EQ_IN];
     }
 
     return [null, null, null];
@@ -787,7 +805,11 @@ export default class Parser {
     return this.getAllSiblings(clonePath)
       .filter((sibling: NodeType) => sibling.name === field && sibling.uuid)
       .map((node: NodeType) => {
-        const { uuid, value, errors } = node;
+        const {
+          uuid,
+          value,
+          errors,
+        } = node;
         if (this.nodesById[uuid]) {
           return node;
         }
@@ -832,6 +854,11 @@ export default class Parser {
           const { display: currentDisplay } = this.nodesById[nodeId].getValue();
 
           const hasMatch = [...Object.keys(this.subscriptions[nodeId]), fieldId].filter((id: string) => {
+            if (type === Parser.EQ_IN) {
+              return Parser.explodeValue(value)
+                .includes(this.nodesById?.[id]?.getValue()?.value);
+            }
+
             if (type === Parser.EQ_STRICT_EQUAL) {
               return this.nodesById?.[id]?.getValue()?.value === Parser.convertValue(value);
             }
@@ -887,5 +914,12 @@ export default class Parser {
     }
 
     return value;
+  }
+
+  private static explodeValue(value: string): string[] {
+    return value
+      .replace('\\,', '\\;')
+      .split(',')
+      .map((val: string) => val.replace('\\;', ','));
   }
 }

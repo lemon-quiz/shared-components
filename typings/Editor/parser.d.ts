@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { NodeType, PageInterface } from '../Interfaces/template.interface';
 import AbstractValidator from './validator/AbstractValidator';
 export default class Parser {
+    static EQ_IN: string;
     static EQ_STRICT_EQUAL: string;
     static EQ_STRICT_NOT_EQUAL: string;
     static EQ_GTE: string;
@@ -217,4 +218,5 @@ export default class Parser {
     private searchShowHide;
     private subscribe;
     private static convertValue;
+    private static explodeValue;
 }
