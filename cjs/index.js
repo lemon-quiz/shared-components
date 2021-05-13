@@ -403,7 +403,7 @@ function NodeWrapper(_a) {
         // Do not render template nodes
         return React__default['default'].createElement(React__default['default'].Fragment, null);
     }
-    if (node.tuuid && state.canAdd) {
+    if (node.tuuid && state.canAdd && node.display) {
         // Do not render template nodes
         return (React__default['default'].createElement(core.Box, { display: "flex", flexDirection: "row" },
             React__default['default'].createElement(core.Box, { p: 1, m: 1, mr: 0, bgcolor: "grey.300" },

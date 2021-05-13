@@ -48,7 +48,7 @@ export default function NodeWrapper({
     return <></>;
   }
 
-  if (node.tuuid && state.canAdd) {
+  if (node.tuuid && state.canAdd && node.display) {
     // Do not render template nodes
     return (
       <Box display="flex" flexDirection="row">
