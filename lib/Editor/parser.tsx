@@ -836,7 +836,7 @@ export default class Parser {
         this.searchShowHide(node.children, [...path, index]);
       }
 
-      if (typeof node.show !== 'undefined') {
+      if (typeof node.show !== 'undefined' && (node.uuid || node.tuuid)) {
         const [field, value, type] = Parser.parseEquation(node.show);
         const ids = this.getEquationNodeIds(field, path);
         this.setParams(node.uuid ?? node.tuuid, {

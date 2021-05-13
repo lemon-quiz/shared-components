@@ -1105,7 +1105,7 @@ var Parser = /** @class */ (function () {
             if (node.children) {
                 _this.searchShowHide(node.children, tslib.__spreadArray(tslib.__spreadArray([], path), [index]));
             }
-            if (typeof node.show !== 'undefined') {
+            if (typeof node.show !== 'undefined' && (node.uuid || node.tuuid)) {
                 var _b = Parser.parseEquation(node.show), field = _b[0], value_1 = _b[1], type_1 = _b[2];
                 var ids = _this.getEquationNodeIds(field, path);
                 _this.setParams((_a = node.uuid) !== null && _a !== void 0 ? _a : node.tuuid, {
