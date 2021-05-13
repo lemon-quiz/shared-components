@@ -1,6 +1,7 @@
 import React from 'react';
+import { Observable } from 'rxjs';
 
-import { NodeType } from '../Interfaces/template.interface';
+import { NodeType, PageInterface } from '../Interfaces/template.interface';
 
 export const EditorContext = React.createContext(null);
 
@@ -19,4 +20,9 @@ export interface EditorContextInterface {
   hasCustomNode: (type: string) => boolean;
   getCustomNode: (type: string) => React.JSXElementConstructor<any>
   getSiblings: (path: number[]) => NodeType[] | [];
+  show: (equation: string, path) => boolean;
+  getEquationNodeIds: (equation: string, path) => string[];
+  onValueChanges: Observable<any>
+  onTreeChanges: Observable<any>
+  page: Observable<PageInterface>
 }

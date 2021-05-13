@@ -1,26 +1,32 @@
+import { Observable } from 'rxjs';
 import { NodeType, PageInterface } from '../Interfaces/template.interface';
 import AbstractValidator from './validator/AbstractValidator';
 export default class Parser {
-    private initPage;
-    private valueList;
-    private errorsList;
+    static EQ_STRICT_EQUAL: string;
+    static EQ_STRICT_NOT_EQUAL: string;
+    static EQ_GTE: string;
+    static EQ_LTE: string;
+    static EQ_GTE_OR_EQUAL: string;
+    static EQ_LTE_OR_EQUAL: string;
+    private internalPage;
+    private get staticPage();
+    private set staticPage(value);
+    get page(): Observable<PageInterface>;
+    private destroy;
     private validator;
+    private nodesById;
+    private subscriptions;
+    private runShowHide;
+    private errorsList;
     constructor(validator: AbstractValidator);
-    /**
-     *
-     * @param template
-     * @param page
-     */
     loadTemplate(template: PageInterface, page: PageInterface): void;
-    /**
-     *
-     */
+    private static clone;
     getPage(): PageInterface;
     /**
      *
      * @param template
      * @param page
-     * @param initPage
+     * @param path
      * @private
      */
     private parse;
@@ -30,20 +36,55 @@ export default class Parser {
      * @param data
      * @private
      */
-    private static findAllNodes;
+    private findAllNodes;
+    /**
+     * Update the value for given node
+     *
+     * @param data
+     * @param updateUuid
+     * @param values
+     * @private
+     */
+    private updateNode;
+    /**
+     * Setting the value fo a node, this does not trigger a re-render.
+     *
+     * @param id
+     * @param value
+     * @param errors
+     */
+    setValue(id: any, value: any, errors?: any): void;
+    /**
+     * Setting custom params, triggers a re-render.
+     *
+     * @param id
+     * @param params
+     */
+    setParams(id: any, params: any): void;
+    /**
+     * Return the value for a given node
+     *
+     * @param id
+     * @param defaultValue
+     * @param defaultErrors
+     */
+    getValue(id: any, defaultValue: any, defaultErrors: any): {
+        value: any;
+        errors: any;
+    };
     /**
      * Move a node 1 position up
      *
      * @param path
      * @param index
      */
-    moveUp(path: number[], index?: number): PageInterface;
+    moveUp(path: number[], index?: number): void;
     /**
      * Move node one position up
      * @param path
      * @param index
      */
-    moveDown(path: number[], index?: number): PageInterface;
+    moveDown(path: number[], index?: number): void;
     /**
      * Check if node can be moved down.
      *
@@ -66,13 +107,13 @@ export default class Parser {
      * @param index
      * @param amount
      */
-    addNode(path: number[], index?: number, amount?: number): PageInterface;
+    addNode(path: number[], index?: number, amount?: number): void;
     /**
      *
      * @param path
      * @param amount
      */
-    deleteNode(path: number[], amount?: number): PageInterface;
+    deleteNode(path: number[], amount?: number): void;
     /**
      *
      * @param path
@@ -144,34 +185,6 @@ export default class Parser {
      */
     private resetIndex;
     /**
-     *
-     *
-     * @param id
-     * @param value
-     * @param errors
-     */
-    setValue(id: any, value: any, errors?: any): void;
-    /**
-     * Return the value for a given node
-     *
-     * @param id
-     * @param defaultValue
-     * @param defaultErrors
-     */
-    getValue(id: any, defaultValue: any, defaultErrors: any): {
-        value: any;
-        errors: any;
-    };
-    /**
-     * Update the value for given node
-     *
-     * @param data
-     * @param updateUuid
-     * @param values
-     * @private
-     */
-    private updateNode;
-    /**
      * Validate the whole page and return the errors
      */
     getPageErrors(): {};
@@ -193,6 +206,15 @@ export default class Parser {
      *
      * @param path
      */
+    getAllSiblings(path: number[]): NodeType[] | [];
+    /**
+     *
+     * @param path
+     */
     getSiblings(path: number[]): NodeType[] | [];
-    getHash(seed?: number): number;
+    private static parseEquation;
+    getEquationNodeIds(field: string, path: number[]): string[];
+    private searchShowHide;
+    private subscribe;
+    private static convertValue;
 }

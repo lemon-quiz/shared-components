@@ -17,19 +17,19 @@ export default function SelectNode({ node }: { node: SelectBoxInterface }) {
 
   useEffect(() => {
     const {
-      uuid,
       value: defaultValue,
-      errors: defaultErrors,
     } = node;
 
-    const { value: initValue, errors: initErrors } = pageContext.getValue(uuid, defaultValue, defaultErrors);
-
-    if (typeof initValue !== 'undefined') {
-      setValue(initValue);
+    if (typeof defaultValue !== 'undefined') {
+      setValue(defaultValue);
     }
+  }, [node.uuid]);
 
-    if (typeof initErrors !== 'undefined') {
-      setErrors(initErrors);
+  useEffect(() => {
+    const { errors: defaultErrors } = node;
+
+    if (defaultErrors) {
+      setErrors(defaultErrors);
     }
   }, [node?.errors]);
 

@@ -12,7 +12,6 @@ class Validator extends AbstractValidator {
   public checkInput(node: NodeType, value?: string) {
     let { validator } = node;
     const errors: any = {};
-
     if (node.mandatory && !(value ?? node.value) && !node.allowEmpty) {
       errors.isEmpty = true;
     }

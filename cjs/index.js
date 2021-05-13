@@ -14,14 +14,14 @@ var core = require('@material-ui/core');
 var icons = require('@material-ui/icons');
 var reactTransitionGroup = require('react-transition-group');
 var ArrowDropUpIcon = require('@material-ui/icons/ArrowDropUp');
+var rxjs = require('rxjs');
+var operators = require('rxjs/operators');
 var uuid = require('uuid');
 var styles = require('@material-ui/styles');
 var colors = require('@material-ui/core/colors');
 var MatSnackbar = require('@material-ui/core/Snackbar');
 var MuiAlert = require('@material-ui/lab/Alert');
 var router = require('next/router');
-var rxjs = require('rxjs');
-var operators = require('rxjs/operators');
 var styles$1 = require('@material-ui/core/styles');
 var moment = require('moment');
 var finalForm = require('final-form');
@@ -162,13 +162,15 @@ function CheckboxNode(_a) {
     var _b = React.useState(false), value = _b[0], setValue = _b[1];
     var _c = React.useState(null), errors = _c[0], setErrors = _c[1];
     React.useEffect(function () {
-        var uuid = node.uuid, defaultValue = node.value, defaultErrors = node.errors;
-        var _a = pageContext.getValue(uuid, defaultValue, defaultErrors), initValue = _a.value, initErrors = _a.errors;
-        if (typeof initValue !== 'undefined') {
-            setValue(initValue);
+        var defaultValue = node.value;
+        if (typeof defaultValue !== 'undefined') {
+            setValue(defaultValue);
         }
-        if (typeof initErrors !== 'undefined') {
-            setErrors(initErrors);
+    }, [node.uuid]);
+    React.useEffect(function () {
+        var defaultErrors = node.errors;
+        if (defaultErrors) {
+            setErrors(defaultErrors);
         }
     }, [node === null || node === void 0 ? void 0 : node.errors]);
     var updateValue = function (change) {
@@ -222,15 +224,16 @@ function LineNode(_a) {
     var pageContext = React.useContext(EditorContext);
     var _b = React.useState(''), value = _b[0], setValue = _b[1];
     var _c = React.useState(null), errors = _c[0], setErrors = _c[1];
-    var _d = React.useState(false); _d[0]; var setTouched = _d[1];
     React.useEffect(function () {
-        var uuid = node.uuid, defaultValue = node.value, defaultErrors = node.errors;
-        var _a = pageContext.getValue(uuid, defaultValue, defaultErrors), initValue = _a.value, initErrors = _a.errors;
-        if (typeof initValue !== 'undefined') {
-            setValue(initValue);
+        var defaultValue = node.value;
+        if (typeof defaultValue !== 'undefined') {
+            setValue(defaultValue);
         }
-        if (typeof initErrors !== 'undefined') {
-            setErrors(initErrors);
+    }, [node.uuid]);
+    React.useEffect(function () {
+        var defaultErrors = node.errors;
+        if (defaultErrors) {
+            setErrors(defaultErrors);
         }
     }, [node === null || node === void 0 ? void 0 : node.errors]);
     var updateValue = function (change) {
@@ -239,12 +242,11 @@ function LineNode(_a) {
         pageContext.setValue(node.uuid, newValue, nodeErrors);
         setValue(newValue);
         setErrors(nodeErrors);
-        setTouched(true);
     };
     var config = node.config;
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
         React__default['default'].createElement(core.FormControl, { error: errors !== null, fullWidth: true },
-            React__default['default'].createElement(core.InputLabel, { htmlFor: "input-" + node.uuid }, node.name),
+            React__default['default'].createElement(core.InputLabel, { htmlFor: "input-" + node.uuid }, node.label),
             React__default['default'].createElement(core.Input, tslib.__assign({ id: "input-" + node.uuid, value: value, onChange: updateValue, "aria-describedby": "input-" + node.uuid + "-error" }, config === null || config === void 0 ? void 0 : config.input)),
             errors !== null && (React__default['default'].createElement(core.FormHelperText, { id: "input-" + node.uuid + "-error" }, Object.keys(errors).map(function (error) { return (React__default['default'].createElement("span", { key: node.uuid + "-" + error }, error)); }))))));
 }
@@ -256,13 +258,15 @@ function RadioNode(_a) {
     var _c = React.useState(''), value = _c[0], setValue = _c[1];
     var _d = React.useState(null), errors = _d[0], setErrors = _d[1];
     React.useEffect(function () {
-        var uuid = node.uuid, defaultValue = node.value, defaultErrors = node.errors;
-        var _a = pageContext.getValue(uuid, defaultValue, defaultErrors), initValue = _a.value, initErrors = _a.errors;
-        if (typeof initValue !== 'undefined') {
-            setValue(initValue);
+        var defaultValue = node.value;
+        if (typeof defaultValue !== 'undefined') {
+            setValue(defaultValue);
         }
-        if (typeof initErrors !== 'undefined') {
-            setErrors(initErrors);
+    }, [node.uuid]);
+    React.useEffect(function () {
+        var defaultErrors = node.errors;
+        if (defaultErrors) {
+            setErrors(defaultErrors);
         }
     }, [node === null || node === void 0 ? void 0 : node.errors]);
     var updateValue = function (change) {
@@ -289,13 +293,15 @@ function SelectNode(_a) {
     var _c = React.useState(''), value = _c[0], setValue = _c[1];
     var _d = React.useState(null), errors = _d[0], setErrors = _d[1];
     React.useEffect(function () {
-        var uuid = node.uuid, defaultValue = node.value, defaultErrors = node.errors;
-        var _a = pageContext.getValue(uuid, defaultValue, defaultErrors), initValue = _a.value, initErrors = _a.errors;
-        if (typeof initValue !== 'undefined') {
-            setValue(initValue);
+        var defaultValue = node.value;
+        if (typeof defaultValue !== 'undefined') {
+            setValue(defaultValue);
         }
-        if (typeof initErrors !== 'undefined') {
-            setErrors(initErrors);
+    }, [node.uuid]);
+    React.useEffect(function () {
+        var defaultErrors = node.errors;
+        if (defaultErrors) {
+            setErrors(defaultErrors);
         }
     }, [node === null || node === void 0 ? void 0 : node.errors]);
     var updateValue = function (change) {
@@ -320,15 +326,16 @@ function TextareaNode(_a) {
     var pageContext = React.useContext(EditorContext);
     var _b = React.useState(''), value = _b[0], setValue = _b[1];
     var _c = React.useState(null), errors = _c[0], setErrors = _c[1];
-    var _d = React.useState(false); _d[0]; var setTouched = _d[1];
     React.useEffect(function () {
-        var uuid = node.uuid, defaultValue = node.value, defaultErrors = node.errors;
-        var _a = pageContext.getValue(uuid, defaultValue, defaultErrors), initValue = _a.value, initErrors = _a.errors;
-        if (typeof initValue !== 'undefined') {
-            setValue(initValue);
+        var defaultValue = node.value;
+        if (typeof defaultValue !== 'undefined') {
+            setValue(defaultValue);
         }
-        if (typeof initErrors !== 'undefined') {
-            setErrors(initErrors);
+    }, [node.uuid]);
+    React.useEffect(function () {
+        var defaultErrors = node.errors;
+        if (defaultErrors) {
+            setErrors(defaultErrors);
         }
     }, [node === null || node === void 0 ? void 0 : node.errors]);
     var updateValue = function (change) {
@@ -337,12 +344,11 @@ function TextareaNode(_a) {
         pageContext.setValue(node.uuid, newValue, nodeErrors);
         setValue(newValue);
         setErrors(nodeErrors);
-        setTouched(true);
     };
     var config = node.config;
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
         React__default['default'].createElement(core.FormControl, { error: errors !== null, fullWidth: true },
-            React__default['default'].createElement(core.InputLabel, { htmlFor: "input-" + node.uuid }, node.name),
+            React__default['default'].createElement(core.InputLabel, { htmlFor: "input-" + node.uuid }, node.label),
             React__default['default'].createElement(core.Input, tslib.__assign({ value: value, onChange: updateValue, "aria-describedby": "input-" + node.uuid + "-error", multiline: true, rows: 20 }, config === null || config === void 0 ? void 0 : config.input)),
             errors !== null && (React__default['default'].createElement(core.FormHelperText, { id: "input-" + node.uuid + "-error" }, Object.keys(errors).map(function (error) { return (React__default['default'].createElement("span", { key: node.uuid + "-" + error }, error)); }))))));
 }
@@ -392,8 +398,8 @@ function NodeWrapper(_a) {
         setState({
             canAdd: pageContext.canAdd(path),
         });
-    }, [index, length]);
-    if (node.tuuid && !state.canAdd) {
+    }, [node.uuid, node.tuuid, node.display]);
+    if ((node.tuuid && !state.canAdd)) {
         // Do not render template nodes
         return React__default['default'].createElement(React__default['default'].Fragment, null);
     }
@@ -404,12 +410,16 @@ function NodeWrapper(_a) {
                 React__default['default'].createElement(core.Button, { onClick: addNode, disabled: !state.canAdd, component: "span", color: "primary", size: "small", startIcon: React__default['default'].createElement(icons.AddBox, null) }, "Add " + node.name)),
             React__default['default'].createElement(core.Box, { p: 1, m: 1, ml: 0, bgcolor: "grey.300", flexGrow: 1 }, node.slider && React__default['default'].createElement(SliderControl, { node: node, path: path, index: index, length: length }))));
     }
+    if ((!node.display)) {
+        // Do not render template nodes
+        return React__default['default'].createElement(React__default['default'].Fragment, null);
+    }
     if (node.type === 'complex') {
         return (React__default['default'].createElement(React__default['default'].Fragment, null,
             React__default['default'].createElement(core.Box, { display: "flex", flexDirection: "row" },
                 React__default['default'].createElement(core.Box, { flex: "100%", p: 1, m: 1, bgcolor: "grey.300" },
                     React__default['default'].createElement(core.Button, { onClick: function () { return setCollapsed(!collapsed); }, component: "span", color: "primary", size: "small", startIcon: collapsed ? React__default['default'].createElement(icons.KeyboardArrowRight, null) : React__default['default'].createElement(icons.KeyboardArrowDown, null) }, index + ".",
-                        ' ', "" + node.name)),
+                        ' ', "" + node.label)),
                 React__default['default'].createElement(core.Box, { flex: "140px", flexShrink: 0, p: 1, m: 1, mr: 1, bgcolor: "grey.300" },
                     React__default['default'].createElement(Controls, { node: node, index: index, path: path, length: length }))),
             !collapsed && (React__default['default'].createElement(core.Box, { display: "flex", flexDirection: "row" },
@@ -417,7 +427,7 @@ function NodeWrapper(_a) {
                 React__default['default'].createElement(core.Box, { flex: "100%", p: 1, pr: 0, m: 1, mr: 0 }, node.children.map(function (childNode, childIndex) { return (React__default['default'].createElement(NodeWrapper, { node: childNode, index: childIndex, key: childNode.uuid || childNode.tuuid, path: tslib.__spreadArray(tslib.__spreadArray([], path), [childIndex]), length: node.children.length })); }))))));
     }
     return (React__default['default'].createElement(core.Box, { display: "flex", flexDirection: "row" },
-        React__default['default'].createElement(core.Box, { flex: "1 0 20%", p: 1, m: 1 }, node.name),
+        React__default['default'].createElement(core.Box, { flex: "1 0 20%", p: 1, m: 1 }, node.label),
         React__default['default'].createElement(core.Box, { flex: "80%", p: 1, m: 1, bgcolor: "grey.400" },
             React__default['default'].createElement(reactTransitionGroup.CSSTransition, { in: animate, timeout: 3000, classNames: {
                     enter: 'animated',
@@ -432,23 +442,28 @@ function Editor(_a) {
     var parser = _a.parser, page = _a.page, customNodes = _a.customNodes;
     var _b = React.useState([]), state = _b[0], setState = _b[1];
     React.useEffect(function () {
-        setState(page);
+        var sub = parser.page.subscribe(function (result) {
+            setState(result);
+        });
+        return function () {
+            sub.unsubscribe();
+        };
     }, [JSON.stringify(page)]);
     var moveUp = function (path, index) {
-        setState(parser.moveUp(path, index));
+        parser.moveUp(path, index);
     };
     var moveDown = function (path, index) {
-        setState(parser.moveDown(path, index));
+        parser.moveDown(path, index);
     };
     var canMoveUp = function (path, index, type, name) { return parser.canMoveUp(path, index, type, name); };
     var canMoveDown = function (path, index, type, name) { return parser.canMoveDown(path, index, type, name); };
     var canDelete = function (path) { return parser.canDelete(path); };
     var canAdd = function (path) { return parser.canAdd(path); };
     var addNode = function (path, index, amount) {
-        setState(parser.addNode(path, index, amount));
+        parser.addNode(path, index, amount);
     };
     var deleteNode = function (path, amount) {
-        setState(parser.deleteNode(path, amount));
+        parser.deleteNode(path, amount);
     };
     var setValue = function (id, value, errors) { return parser.setValue(id, value, errors); };
     var getValue = function (id, value, errors) { return parser.getValue(id, value, errors); };
@@ -456,6 +471,8 @@ function Editor(_a) {
     var hasCustomNode = function (type) { return !!(customNodes === null || customNodes === void 0 ? void 0 : customNodes[type]); };
     var getCustomNode = function (type) { return customNodes[type]; };
     var getSiblings = function (path) { return parser.getSiblings(path); };
+    var getEquationNodeIds = function (field, path) { return parser.getEquationNodeIds(field, path); };
+    var pageSubject = parser.page;
     return (React__default['default'].createElement(EditorContext.Provider, { value: {
             moveUp: moveUp,
             canMoveUp: canMoveUp,
@@ -471,61 +488,83 @@ function Editor(_a) {
             hasCustomNode: hasCustomNode,
             getCustomNode: getCustomNode,
             getSiblings: getSiblings,
+            getEquationNodeIds: getEquationNodeIds,
+            page: pageSubject,
         } }, state.map(function (node, index) { return (React__default['default'].createElement(NodeWrapper, { key: node.uuid || node.tuuid, index: index, node: node, path: [index], length: state.length })); })));
 }
 
 var Parser = /** @class */ (function () {
     function Parser(validator) {
-        this.initPage = [];
-        this.valueList = {};
+        this.internalPage = new rxjs.BehaviorSubject([]);
+        this.destroy = new rxjs.Subject();
+        this.nodesById = {};
+        this.runShowHide = false;
         this.errorsList = {};
         this.validator = validator;
     }
-    /**
-     *
-     * @param template
-     * @param page
-     */
+    Object.defineProperty(Parser.prototype, "staticPage", {
+        get: function () {
+            return Parser.clone(this.internalPage.getValue());
+        },
+        set: function (value) {
+            this.internalPage.next(Parser.clone(value));
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Parser.prototype, "page", {
+        get: function () {
+            return this.internalPage.asObservable();
+        },
+        enumerable: false,
+        configurable: true
+    });
     Parser.prototype.loadTemplate = function (template, page) {
-        this.initPage = this.parse(template, page);
-        this.valueList = {};
+        this.destroy.next(true);
+        this.nodesById = {};
+        this.subscriptions = {};
+        this.runShowHide = false;
+        var parsed = this.parse(template, page);
+        this.staticPage = parsed;
+        this.searchShowHide(parsed);
     };
-    /**
-     *
-     */
+    Parser.clone = function (page) {
+        return JSON.parse(JSON.stringify(page));
+    };
     Parser.prototype.getPage = function () {
-        return JSON.parse(JSON.stringify(this.initPage));
+        return this.staticPage;
     };
     /**
      *
      * @param template
      * @param page
-     * @param initPage
+     * @param path
      * @private
      */
-    Parser.prototype.parse = function (template, page, initPage) {
+    Parser.prototype.parse = function (template, page, path) {
         var _this = this;
         if (page === void 0) { page = []; }
-        if (initPage === void 0) { initPage = []; }
+        if (path === void 0) { path = []; }
+        var staticPage = [];
         // eslint-disable-next-line consistent-return
-        template.forEach(function (templateNode) {
+        template.forEach(function (templateNode, index) {
             if (templateNode.type === 'complex') {
-                var nodes_1 = Parser.findAllNodes(templateNode, page);
+                var nodes_1 = _this.findAllNodes(templateNode, page);
                 nodes_1.forEach(function (_a) {
                     var children = _a.children, rest = tslib.__rest(_a, ["children"]);
-                    var newChildren = _this.parse(templateNode.children, children !== null && children !== void 0 ? children : []);
-                    initPage.push(tslib.__assign(tslib.__assign({}, rest), { children: newChildren }));
+                    var newChildren = _this.parse(templateNode.children, children !== null && children !== void 0 ? children : [], tslib.__spreadArray(tslib.__spreadArray([], path), [index]));
+                    staticPage.push(tslib.__assign(tslib.__assign({}, rest), { children: newChildren }));
                 });
-                initPage.push(tslib.__assign(tslib.__assign({}, templateNode), { tuuid: uuid.v4() }));
-                return initPage;
+                staticPage.push(tslib.__assign(tslib.__assign({}, templateNode), { tuuid: uuid.v4() }));
+                return staticPage;
             }
-            var nodes = Parser.findAllNodes(templateNode, page);
+            var nodes = _this.findAllNodes(templateNode, page);
             nodes.forEach(function (dataNode) {
-                initPage.push(dataNode);
+                staticPage.push(dataNode);
             });
-            initPage.push(tslib.__assign(tslib.__assign({}, templateNode), { tuuid: uuid.v4() }));
+            staticPage.push(tslib.__assign(tslib.__assign({}, templateNode), { tuuid: uuid.v4() }));
         });
-        return initPage;
+        return staticPage;
     };
     /**
      *
@@ -533,24 +572,108 @@ var Parser = /** @class */ (function () {
      * @param data
      * @private
      */
-    Parser.findAllNodes = function (node, data) {
+    Parser.prototype.findAllNodes = function (node, data) {
+        var _this = this;
         var name = node.name, type = node.type;
         var nodes = data.filter(function (dataNode) { return (dataNode.name === name && dataNode.type === type && dataNode.uuid); })
             .map(function (dataNode) { return (tslib.__assign(tslib.__assign({}, node), {
             value: dataNode.value,
             uuid: dataNode.uuid,
             children: dataNode.children,
+            display: (!(node.show || node.hide)),
         })); });
         if (nodes.length > 0) {
             if (!node.multiple) {
-                return [nodes.shift()];
+                var firstChild = nodes.shift();
+                this.nodesById[firstChild.uuid] = null;
+                return [firstChild];
             }
+            nodes.forEach(function (thisNode) {
+                _this.nodesById[thisNode.uuid] = null;
+            });
             return nodes;
         }
         if (node.mandatory) {
-            return [tslib.__assign(tslib.__assign({}, node), { uuid: uuid.v4() })];
+            var uuid$1 = uuid.v4();
+            var newNode = tslib.__assign(tslib.__assign({}, node), { display: (!(node.show || node.hide)), uuid: uuid$1 });
+            this.nodesById[newNode.uuid] = null;
+            return [newNode];
         }
         return [];
+    };
+    /**
+     * Update the value for given node
+     *
+     * @param data
+     * @param updateUuid
+     * @param values
+     * @private
+     */
+    Parser.prototype.updateNode = function (data, updateUuid, values) {
+        var _this = this;
+        return data.map(function (node) {
+            var uuid = node.uuid, children = node.children;
+            if (uuid === updateUuid) {
+                return (tslib.__assign(tslib.__assign({}, node), values));
+            }
+            if (Array.isArray(children)) {
+                return tslib.__assign(tslib.__assign({}, node), { children: _this.updateNode(children, updateUuid, values) });
+            }
+            return node;
+        });
+    };
+    /**
+     * Setting the value fo a node, this does not trigger a re-render.
+     *
+     * @param id
+     * @param value
+     * @param errors
+     */
+    Parser.prototype.setValue = function (id, value, errors) {
+        this.staticPage = this.updateNode(this.staticPage, id, {
+            value: value,
+            errors: errors,
+        });
+        if (!this.nodesById[id]) {
+            this.nodesById[id] = new rxjs.BehaviorSubject({
+                value: value,
+                errors: errors,
+            });
+            return;
+        }
+        var merged = tslib.__assign(tslib.__assign({}, this.nodesById[id].getValue()), { value: value, errors: errors });
+        this.nodesById[id].next(merged);
+    };
+    /**
+     * Setting custom params, triggers a re-render.
+     *
+     * @param id
+     * @param params
+     */
+    Parser.prototype.setParams = function (id, params) {
+        this.staticPage = this.updateNode(this.staticPage, id, params);
+        if (!this.nodesById[id]) {
+            this.nodesById[id] = new rxjs.BehaviorSubject(params);
+            return;
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        params.uuid; params.tuuid; params.name; params.type; var rest = tslib.__rest(params, ["uuid", "tuuid", "name", "type"]);
+        var merged = tslib.__assign(tslib.__assign({}, this.nodesById[id].getValue()), rest);
+        this.nodesById[id].next(merged);
+    };
+    /**
+     * Return the value for a given node
+     *
+     * @param id
+     * @param defaultValue
+     * @param defaultErrors
+     */
+    Parser.prototype.getValue = function (id, defaultValue, defaultErrors) {
+        var _a, _b, _c;
+        return (_c = (_b = (_a = this.nodesById) === null || _a === void 0 ? void 0 : _a[id]) === null || _b === void 0 ? void 0 : _b.getValue()) !== null && _c !== void 0 ? _c : {
+            value: defaultValue,
+            errors: defaultErrors,
+        };
     };
     /**
      * Move a node 1 position up
@@ -561,16 +684,15 @@ var Parser = /** @class */ (function () {
     Parser.prototype.moveUp = function (path, index) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var _a = this.getFromPath(clonePath, this.initPage), parent = _a.parent, siblings = _a.siblings;
-        var _b = siblings[nodeIndex], name = _b.name, type = _b.type;
+        var page = this.staticPage;
+        var siblings = this.getFromPath(clonePath, page).siblings;
+        var _a = siblings[nodeIndex], name = _a.name, type = _a.type;
         var canMove = Parser.canMoveUpInternal(siblings, nodeIndex, type, name);
         if (canMove) {
             var newIndex = (typeof index !== 'undefined' ? index : nodeIndex - 1);
             siblings.splice(newIndex, 0, siblings.splice(nodeIndex, 1)[0]);
-            this.resetIndex(parent, siblings);
         }
-        this.resetIndex(parent, siblings);
-        return this.getPage();
+        this.staticPage = page;
     };
     /**
      * Move node one position up
@@ -580,7 +702,8 @@ var Parser = /** @class */ (function () {
     Parser.prototype.moveDown = function (path, index) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var _a = this.getFromPath(clonePath, this.initPage), parent = _a.parent, siblings = _a.siblings;
+        var page = this.staticPage;
+        var _a = this.getFromPath(clonePath, page), parent = _a.parent, siblings = _a.siblings;
         var _b = siblings[nodeIndex], name = _b.name, type = _b.type;
         var canMove = Parser.canMoveDownInternal(siblings, nodeIndex, type, name);
         if (canMove) {
@@ -588,7 +711,7 @@ var Parser = /** @class */ (function () {
             siblings.splice(newIndex, 0, siblings.splice(nodeIndex, 1)[0]);
             this.resetIndex(parent, siblings);
         }
-        return this.getPage();
+        this.staticPage = page;
     };
     /**
      * Check if node can be moved down.
@@ -601,7 +724,7 @@ var Parser = /** @class */ (function () {
     Parser.prototype.canMoveUp = function (path, index, type, name) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var siblings = this.getFromPath(clonePath, this.initPage).siblings;
+        var siblings = this.getFromPath(clonePath, this.staticPage).siblings;
         return Parser.canMoveUpInternal(siblings, nodeIndex, type, name);
     };
     /**
@@ -612,7 +735,7 @@ var Parser = /** @class */ (function () {
     Parser.prototype.canAdd = function (path) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var siblings = this.getFromPath(clonePath, this.initPage).siblings;
+        var siblings = this.getFromPath(clonePath, this.staticPage).siblings;
         var _a = siblings[nodeIndex], name = _a.name, type = _a.type, multiple = _a.multiple, uuid = _a.uuid, tuuid = _a.tuuid;
         if (uuid && !multiple) {
             return false;
@@ -638,19 +761,23 @@ var Parser = /** @class */ (function () {
     Parser.prototype.addNode = function (path, index, amount) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var siblings = this.getFromPath(tslib.__spreadArray([], clonePath), this.initPage).siblings;
+        var page = this.staticPage;
+        var siblings = this.getFromPath(tslib.__spreadArray([], clonePath), page).siblings;
         var _a = siblings[nodeIndex], name = _a.name, type = _a.type;
         var templateNode = siblings.find(function (node) { return (node.name === name && node.type === type && !node.uuid && node.tuuid); });
         if (!templateNode) {
             // eslint-disable-next-line no-console
             console.error("Template node type: " + type + ", name: " + name + " was not found.");
-            return this.getPage();
+            this.staticPage = page;
+            return;
         }
         if (!amount) {
             var newNode = this.initNode(templateNode);
             var insertIndex = typeof index !== 'undefined' ? index + 1 : nodeIndex;
             siblings.splice(insertIndex, 0, newNode);
-            return this.getPage();
+            this.staticPage = page;
+            this.searchShowHide(page);
+            return;
         }
         // eslint-disable-next-line no-plusplus
         for (var i = 1; i <= amount; i++) {
@@ -658,7 +785,8 @@ var Parser = /** @class */ (function () {
             var insertIndex = typeof index !== 'undefined' ? index : nodeIndex;
             siblings.splice(insertIndex, 0, newNode);
         }
-        return this.getPage();
+        this.staticPage = page;
+        this.searchShowHide(page);
     };
     /**
      *
@@ -668,22 +796,26 @@ var Parser = /** @class */ (function () {
     Parser.prototype.deleteNode = function (path, amount) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var siblings = this.getFromPath(tslib.__spreadArray([], clonePath), this.initPage).siblings;
+        var page = this.staticPage;
+        var siblings = this.getFromPath(tslib.__spreadArray([], clonePath), page).siblings;
         if (!amount) {
             if (!this.canDelete(path)) {
-                return this.getPage();
+                this.staticPage = page;
+                return;
             }
             siblings.splice(nodeIndex, 1);
-            return this.getPage();
+            this.staticPage = page;
+            return;
         }
         // eslint-disable-next-line no-plusplus
         for (var i = 1; i <= amount; i++) {
             if (!this.canDelete(tslib.__spreadArray(tslib.__spreadArray([], clonePath), [nodeIndex - i]))) {
-                return this.getPage();
+                this.staticPage = page;
+                return;
             }
             siblings.splice(nodeIndex - i, 1);
         }
-        return this.getPage();
+        this.staticPage = page;
     };
     /**
      *
@@ -692,7 +824,7 @@ var Parser = /** @class */ (function () {
     Parser.prototype.canDelete = function (path) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var siblings = this.getFromPath(clonePath, this.initPage).siblings;
+        var siblings = this.getFromPath(clonePath, this.staticPage).siblings;
         var _a = siblings[nodeIndex], type = _a.type, name = _a.name;
         return Parser.canDeleteNodeInternal(siblings, type, name);
     };
@@ -738,7 +870,7 @@ var Parser = /** @class */ (function () {
     Parser.prototype.canMoveDown = function (path, index, type, name) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var siblings = this.getFromPath(clonePath, this.initPage).siblings;
+        var siblings = this.getFromPath(clonePath, this.staticPage).siblings;
         return Parser.canMoveDownInternal(siblings, nodeIndex, type, name);
     };
     /**
@@ -807,71 +939,18 @@ var Parser = /** @class */ (function () {
      */
     Parser.prototype.resetIndex = function (parent, siblings) {
         if (parent === null) {
-            this.initPage = siblings.filter(function () { return true; });
+            this.staticPage = siblings.filter(function () { return true; });
             return;
         }
         // eslint-disable-next-line no-param-reassign
         parent.children = siblings.filter(function () { return true; });
     };
     /**
-     *
-     *
-     * @param id
-     * @param value
-     * @param errors
-     */
-    Parser.prototype.setValue = function (id, value, errors) {
-        this.valueList[id] = {
-            id: id,
-            value: value,
-            errors: errors,
-        };
-        this.initPage = this.updateNode(this.initPage, id, {
-            value: value,
-            errors: errors,
-        });
-    };
-    /**
-     * Return the value for a given node
-     *
-     * @param id
-     * @param defaultValue
-     * @param defaultErrors
-     */
-    Parser.prototype.getValue = function (id, defaultValue, defaultErrors) {
-        var _a, _b;
-        return (_b = (_a = this.valueList) === null || _a === void 0 ? void 0 : _a[id]) !== null && _b !== void 0 ? _b : {
-            value: defaultValue,
-            errors: defaultErrors,
-        };
-    };
-    /**
-     * Update the value for given node
-     *
-     * @param data
-     * @param updateUuid
-     * @param values
-     * @private
-     */
-    Parser.prototype.updateNode = function (data, updateUuid, values) {
-        var _this = this;
-        return data.map(function (node) {
-            var uuid = node.uuid, children = node.children;
-            if (uuid === updateUuid) {
-                return (tslib.__assign(tslib.__assign({}, node), values));
-            }
-            if (Array.isArray(children)) {
-                return tslib.__assign(tslib.__assign({}, node), { children: _this.updateNode(children, updateUuid, values) });
-            }
-            return node;
-        });
-    };
-    /**
      * Validate the whole page and return the errors
      */
     Parser.prototype.getPageErrors = function () {
         this.errorsList = {};
-        this.initPage = this.validateNodes(this.initPage);
+        this.staticPage = this.validateNodes(this.staticPage);
         return Object.keys(this.errorsList).length > 0 ? this.errorsList : null;
     };
     /**
@@ -883,7 +962,7 @@ var Parser = /** @class */ (function () {
     Parser.prototype.validateNodes = function (data) {
         var _this = this;
         return data.map(function (node) {
-            if (!node.uuid) {
+            if (!node.uuid || !node.display) {
                 return node;
             }
             var errors = _this.validator.checkInput(node, node.value);
@@ -923,28 +1002,166 @@ var Parser = /** @class */ (function () {
      *
      * @param path
      */
+    Parser.prototype.getAllSiblings = function (path) {
+        var clonePath = tslib.__spreadArray([], path);
+        var siblings = this.getFromPath(clonePath, this.staticPage).siblings;
+        if (!siblings) {
+            return [];
+        }
+        return siblings;
+    };
+    /**
+     *
+     * @param path
+     */
     Parser.prototype.getSiblings = function (path) {
         var clonePath = tslib.__spreadArray([], path);
         var nodeIndex = clonePath.pop();
-        var siblings = this.getFromPath(clonePath, this.initPage).siblings;
+        var siblings = this.getFromPath(clonePath, this.staticPage).siblings;
+        if (!siblings[nodeIndex]) {
+            return [];
+        }
         var _a = siblings[nodeIndex], name = _a.name, type = _a.type;
         return siblings.filter(function (node) { return (node.name === name && node.type === type && node.uuid && !node.tuuid); });
     };
-    Parser.prototype.getHash = function (seed) {
-        if (seed === void 0) { seed = 0; }
-        var str = JSON.stringify(this.initPage);
-        var h1 = 0xdeadbeef ^ seed;
-        var h2 = 0x41c6ce57 ^ seed;
-        // eslint-disable-next-line no-plusplus
-        for (var i = 0, ch = void 0; i < str.length; i++) {
-            ch = str.charCodeAt(i);
-            h1 = Math.imul(h1 ^ ch, 2654435761);
-            h2 = Math.imul(h2 ^ ch, 1597334677);
+    Parser.parseEquation = function (equation) {
+        if (equation.includes('===')) {
+            var _a = equation.split('==='), field = _a[0], value = _a[1];
+            field = field.trim();
+            value = value.trim();
+            return [field, value, Parser.EQ_STRICT_EQUAL];
         }
-        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-        return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+        if (equation.includes('!==')) {
+            var _b = equation.split('!=='), field = _b[0], value = _b[1];
+            field = field.trim();
+            value = value.trim();
+            return [field, value, Parser.EQ_STRICT_NOT_EQUAL];
+        }
+        if (equation.includes('>=')) {
+            var _c = equation.split('>='), field = _c[0], value = _c[1];
+            field = field.trim();
+            value = value.trim();
+            return [field, value, Parser.EQ_GTE_OR_EQUAL];
+        }
+        if (equation.includes('>')) {
+            var _d = equation.split('>'), field = _d[0], value = _d[1];
+            field = field.trim();
+            value = value.trim();
+            return [field, value, Parser.EQ_GTE];
+        }
+        if (equation.includes('<=')) {
+            var _e = equation.split('<='), field = _e[0], value = _e[1];
+            field = field.trim();
+            value = value.trim();
+            return [field, value, Parser.EQ_LTE_OR_EQUAL];
+        }
+        if (equation.includes('<')) {
+            var _f = equation.split('<'), field = _f[0], value = _f[1];
+            field = field.trim();
+            value = value.trim();
+            return [field, value, Parser.EQ_LTE];
+        }
+        return [null, null, null];
     };
+    Parser.prototype.getEquationNodeIds = function (field, path) {
+        var _this = this;
+        var clonePath = tslib.__spreadArray([], path);
+        return this.getAllSiblings(clonePath)
+            .filter(function (sibling) { return sibling.name === field && sibling.uuid; })
+            .map(function (node) {
+            var uuid = node.uuid, value = node.value, errors = node.errors;
+            if (_this.nodesById[uuid]) {
+                return node;
+            }
+            _this.nodesById[uuid] = new rxjs.BehaviorSubject({
+                value: value,
+                errors: errors,
+            });
+            return node;
+        })
+            .map(function (_a) {
+            var uuid = _a.uuid;
+            return (uuid);
+        });
+    };
+    Parser.prototype.searchShowHide = function (page, path) {
+        var _this = this;
+        if (path === void 0) { path = []; }
+        page.forEach(function (node, index) {
+            if (node.children) {
+                _this.searchShowHide(node.children, tslib.__spreadArray(tslib.__spreadArray([], path), [index]));
+            }
+            if (node.show) {
+                var _a = Parser.parseEquation(node.show), field = _a[0], value_1 = _a[1], type_1 = _a[2];
+                var ids = _this.getEquationNodeIds(field, path);
+                ids.forEach(function (id) {
+                    _this.setValue(node.uuid, node.value, node.errors);
+                    _this.subscribe(node.uuid, id, value_1, type_1);
+                });
+            }
+        });
+    };
+    Parser.prototype.subscribe = function (nodeId, fieldId, value, type) {
+        var _this = this;
+        if (!this.subscriptions[nodeId]) {
+            this.subscriptions[nodeId] = {};
+        }
+        if (!this.subscriptions[nodeId][fieldId] && this.nodesById[fieldId]) {
+            this.subscriptions[nodeId][fieldId] = this.nodesById[fieldId]
+                .pipe(operators.takeUntil(this.destroy))
+                .subscribe(function () {
+                var currentDisplay = _this.nodesById[nodeId].getValue().display;
+                var hasMatch = tslib.__spreadArray(tslib.__spreadArray([], Object.keys(_this.subscriptions[nodeId])), [fieldId]).filter(function (id) {
+                    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+                    if (type === Parser.EQ_STRICT_EQUAL) {
+                        return ((_c = (_b = (_a = _this.nodesById) === null || _a === void 0 ? void 0 : _a[id]) === null || _b === void 0 ? void 0 : _b.getValue()) === null || _c === void 0 ? void 0 : _c.value) === Parser.convertValue(value);
+                    }
+                    if (type === Parser.EQ_STRICT_NOT_EQUAL) {
+                        return ((_f = (_e = (_d = _this.nodesById) === null || _d === void 0 ? void 0 : _d[id]) === null || _e === void 0 ? void 0 : _e.getValue()) === null || _f === void 0 ? void 0 : _f.value) !== Parser.convertValue(value);
+                    }
+                    if (type === Parser.EQ_GTE_OR_EQUAL) {
+                        return Number((_j = (_h = (_g = _this.nodesById) === null || _g === void 0 ? void 0 : _g[id]) === null || _h === void 0 ? void 0 : _h.getValue()) === null || _j === void 0 ? void 0 : _j.value) >= Number(value);
+                    }
+                    if (type === Parser.EQ_GTE) {
+                        return Number((_m = (_l = (_k = _this.nodesById) === null || _k === void 0 ? void 0 : _k[id]) === null || _l === void 0 ? void 0 : _l.getValue()) === null || _m === void 0 ? void 0 : _m.value) > Number(value);
+                    }
+                    if (type === Parser.EQ_LTE_OR_EQUAL) {
+                        return Number((_q = (_p = (_o = _this.nodesById) === null || _o === void 0 ? void 0 : _o[id]) === null || _p === void 0 ? void 0 : _p.getValue()) === null || _q === void 0 ? void 0 : _q.value) <= Number(value);
+                    }
+                    if (type === Parser.EQ_LTE) {
+                        return Number((_t = (_s = (_r = _this.nodesById) === null || _r === void 0 ? void 0 : _r[id]) === null || _s === void 0 ? void 0 : _s.getValue()) === null || _t === void 0 ? void 0 : _t.value) < Number(value);
+                    }
+                    return false;
+                });
+                if (hasMatch.length > 0) {
+                    if (currentDisplay === true) {
+                        return;
+                    }
+                    _this.setParams(nodeId, { display: true });
+                    return;
+                }
+                if (currentDisplay === false) {
+                    return;
+                }
+                _this.setParams(nodeId, { display: false });
+            });
+        }
+    };
+    Parser.convertValue = function (value) {
+        if (value.toLowerCase() === 'true') {
+            return true;
+        }
+        if (value.toLowerCase() === 'false') {
+            return false;
+        }
+        return value;
+    };
+    Parser.EQ_STRICT_EQUAL = '===';
+    Parser.EQ_STRICT_NOT_EQUAL = '!==';
+    Parser.EQ_GTE = '>';
+    Parser.EQ_LTE = '<';
+    Parser.EQ_GTE_OR_EQUAL = '>==';
+    Parser.EQ_LTE_OR_EQUAL = '<==';
     return Parser;
 }());
 

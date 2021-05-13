@@ -8,6 +8,7 @@ export interface InputConfig {
 export interface NodeInterface {
     type: string;
     name: string;
+    label: string;
     mandatory?: boolean;
     allowEmpty?: boolean;
     multiple?: boolean;
@@ -18,6 +19,9 @@ export interface NodeInterface {
     [key: string]: any;
     config?: InputConfig;
     slider?: boolean;
+    show?: string;
+    hide?: string;
+    display?: boolean;
 }
 export interface CustomNodeInterface extends NodeInterface {
 }

@@ -41,9 +41,9 @@ export default function NodeWrapper({
     setState({
       canAdd: pageContext.canAdd(path),
     });
-  }, [index, length]);
+  }, [node.uuid, node.tuuid, node.display]);
 
-  if (node.tuuid && !state.canAdd) {
+  if ((node.tuuid && !state.canAdd)) {
     // Do not render template nodes
     return <></>;
   }
@@ -71,6 +71,11 @@ export default function NodeWrapper({
     );
   }
 
+  if ((!node.display)) {
+    // Do not render template nodes
+    return <></>;
+  }
+
   if (node.type === 'complex') {
     return (
       <>
@@ -85,7 +90,7 @@ export default function NodeWrapper({
             >
               {`${index}.`}
               {' '}
-              {`${node.name}`}
+              {`${node.label}`}
             </Button>
           </Box>
           <Box
@@ -121,7 +126,7 @@ export default function NodeWrapper({
 
   return (
     <Box display="flex" flexDirection="row">
-      <Box flex="1 0 20%" p={1} m={1}>{node.name}</Box>
+      <Box flex="1 0 20%" p={1} m={1}>{node.label}</Box>
       <Box flex="80%" p={1} m={1} bgcolor="grey.400">
         <CSSTransition
           in={animate}

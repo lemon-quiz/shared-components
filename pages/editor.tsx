@@ -4,9 +4,11 @@ import validatorLib from 'validator';
 
 import TinymceNode from '../components/editor/TinymceNode';
 import {
-  Editor, PageInterface, Parser, Validator,
+  PageInterface, Validator,
 } from '../lib';
-import homepageTemplate from '../templates/single-node.template';
+import Editor from '../lib/Editor/Editor';
+import Parser from '../lib/Editor/parser';
+import homepageTemplate from '../templates/homepage.template';
 
 const parser = new Parser(
   new Validator(validatorLib),
@@ -20,17 +22,20 @@ export default function EditorPage() {
   const [loaded, setLoaded] = useState(false);
   const [page, setPage] = useState<PageInterface>([]);
   const submit = () => {
-    const errors = parser.getPageErrors();
-
-    if (errors) {
-      setPage(parser.getPage());
-    }
+    console.error(parser.getPageErrors());
+    console.log(parser.getPage());
   };
 
   useEffect(() => {
     parser.loadTemplate(homepageTemplate, []);
-    setPage(parser.getPage());
-    setLoaded(true);
+    const sub = parser.page.subscribe((res: PageInterface) => {
+      setPage(res);
+      setLoaded(true);
+    });
+
+    return () => {
+      sub.unsubscribe();
+    };
   }, []);
 
   if (!loaded) {

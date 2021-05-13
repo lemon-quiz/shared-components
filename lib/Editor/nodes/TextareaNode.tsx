@@ -13,23 +13,22 @@ export default function TextareaNode({ node }: { node: TextareaInterface }) {
   const pageContext = useContext<EditorContextInterface>(EditorContext);
   const [value, setValue] = useState<any>('');
   const [errors, setErrors] = useState<any>(null);
-  const [touched, setTouched] = useState<any>(false);
 
   useEffect(() => {
     const {
-      uuid,
       value: defaultValue,
-      errors: defaultErrors,
     } = node;
 
-    const { value: initValue, errors: initErrors } = pageContext.getValue(uuid, defaultValue, defaultErrors);
-
-    if (typeof initValue !== 'undefined') {
-      setValue(initValue);
+    if (typeof defaultValue !== 'undefined') {
+      setValue(defaultValue);
     }
+  }, [node.uuid]);
 
-    if (typeof initErrors !== 'undefined') {
-      setErrors(initErrors);
+  useEffect(() => {
+    const { errors: defaultErrors } = node;
+
+    if (defaultErrors) {
+      setErrors(defaultErrors);
     }
   }, [node?.errors]);
 
@@ -39,7 +38,6 @@ export default function TextareaNode({ node }: { node: TextareaInterface }) {
     pageContext.setValue(node.uuid, newValue, nodeErrors);
     setValue(newValue);
     setErrors(nodeErrors);
-    setTouched(true);
   };
 
   const { config } = node;
@@ -47,7 +45,7 @@ export default function TextareaNode({ node }: { node: TextareaInterface }) {
   return (
     <>
       <FormControl error={errors !== null} fullWidth>
-        <InputLabel htmlFor={`input-${node.uuid}`}>{node.name}</InputLabel>
+        <InputLabel htmlFor={`input-${node.uuid}`}>{node.label}</InputLabel>
         <Input
           value={value}
           onChange={updateValue}
