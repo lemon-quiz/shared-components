@@ -1,53 +1,64 @@
 import {
-  Table,
-  Paper, TableBody,
+  Paper, Table,
+  TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow, TablePagination
-} from "@material-ui/core";
+  TablePagination,
+  TableRow,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { useRouter } from 'next/router';
 import React, {
   ReactElement,
   ReactNode,
-} from "react";
-import {PaginatedResources} from "../Interfaces/PaginatedResources";
-import {useRouter} from "next/router";
-import {makeStyles} from "@material-ui/styles";
-import HeaderSearch from "./Headers/HeaderSearch";
-import Header from "./Headers/Header";
-import setQueryParam from "../utils/setQueryParam";
+} from 'react';
+
+import { PaginatedResources } from '../Interfaces/PaginatedResources';
+import setQueryParam from '../utils/setQueryParam';
+import Header from './Headers/Header';
+import HeaderSearch from './Headers/HeaderSearch';
 
 function generateChildren<T = any>(children: ReactNode, record: T): ReactNode {
   return React.Children.map(children, (child): ReactElement => {
     if (React.isValidElement<ReactElement>(child)) {
-      return React.cloneElement<any>(child, {record, value: record});
+      return React.cloneElement<any>(child, {
+        record,
+        value: record,
+      });
     }
 
     return child as React.ReactElement<any, string | React.JSXElementConstructor<any>>;
   });
 }
 
-const generateHeaders = (children: ReactNode, prefix?: string): any => {
-  return React.Children.map<ReactElement, any>(children, (child) => {
-    if (React.isValidElement<any>(child)) {
-      if (child?.props?.searchable) {
-        return <HeaderSearch label={child.props.label}
-                             prefix={prefix}
-                             column={child.props.column}
-                             sortable={child.props.sortable}/>;
-      }
-
-      if (typeof child?.props?.label !== undefined) {
-        return <Header label={child.props.label}
-                       prefix={prefix}
-                       column={child.props.column}
-                       sortable={child.props.sortable}/>;
-      }
+const generateHeaders = (children: ReactNode, prefix?: string): any => React.Children.map<ReactElement, any>(children, (child) => {
+  if (React.isValidElement<any>(child)) {
+    if (child?.props?.searchable) {
+      return (
+        <HeaderSearch
+          label={child.props.label}
+          prefix={prefix}
+          column={child.props.column}
+          sortable={child.props.sortable}
+        />
+      );
     }
 
-    return <TableCell/>;
-  });
-}
+    if (typeof child?.props?.label !== undefined) {
+      return (
+        <Header
+          label={child.props.label}
+          prefix={prefix}
+          column={child.props.column}
+          sortable={child.props.sortable}
+        />
+      );
+    }
+  }
+
+  return <TableCell />;
+});
 
 export interface AppTableInterface<T = any> {
   children: ReactNode;
@@ -61,19 +72,26 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AppTable<T = any>({children, resource, prefix}: AppTableInterface<T>) {
+export default function AppTable<T = any>({
+  children,
+  resource,
+  prefix,
+}: AppTableInterface<T>) {
   const classes = useStyles();
   const router = useRouter();
 
   const handlePageChange = (_event: any, page: number) => {
-    const {query: currentQuery, pathname} = router;
+    const {
+      query: currentQuery,
+      pathname,
+    } = router;
     const query = setQueryParam(currentQuery, 'page', page + 1, prefix);
 
     router.push({
       pathname,
-      query
-    }, undefined, {shallow: true});
-  }
+      query,
+    }, undefined, { shallow: true });
+  };
 
   return (
     <>
@@ -85,13 +103,11 @@ export default function AppTable<T = any>({children, resource, prefix}: AppTable
             </TableRow>
           </TableHead>
           <TableBody>
-            {resource && (resource.data).map((record: any, index: number): ReactElement => {
-              return (
-                <TableRow key={record?.id || index} hover>
-                  {generateChildren<T>(children, record)}
-                </TableRow>
-              )
-            })}
+            {resource && (resource.data).map((record: any, index: number): ReactElement => (
+              <TableRow key={record?.id || index} hover>
+                {generateChildren<T>(children, record)}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

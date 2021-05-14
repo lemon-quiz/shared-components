@@ -1,9 +1,9 @@
-import {ReactNode} from "react";
+import { ReactNode } from 'react';
 
 type Printable = string | number | undefined | null;
 
 export interface ColumnInterface<T = any> {
-  align?: "left" | "center" | "right" | "justify" | "inherit" | undefined;
+  align?: 'left' | 'center' | 'right' | 'justify' | 'inherit' | undefined;
   record?: T;
   column: string;
   label?: string;

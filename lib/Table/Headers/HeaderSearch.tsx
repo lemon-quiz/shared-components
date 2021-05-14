@@ -3,24 +3,25 @@ import {
   FormControl, IconButton, Input,
   InputAdornment, InputLabel,
   TableCell,
-} from "@material-ui/core";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Backspace } from '@material-ui/icons';
+import { useRouter } from 'next/router';
 import React, {
   ChangeEvent,
+  MouseEvent,
   useEffect,
   useMemo,
   useState,
-  MouseEvent
-} from "react";
-import {useRouter} from "next/router";
-import {from, Subject} from "rxjs";
+} from 'react';
+import { from, Subject } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
-} from "rxjs/operators";
-import {Backspace} from "@material-ui/icons";
-import {makeStyles} from "@material-ui/core/styles";
-import Sortable from "./Sortable";
-import setQueryParam from "../../utils/setQueryParam";
+} from 'rxjs/operators';
+
+import setQueryParam from '../../utils/setQueryParam';
+import Sortable from './Sortable';
 
 interface HeaderSearchInterface {
   column: string;
@@ -28,47 +29,54 @@ interface HeaderSearchInterface {
   prefix?: string;
   sortable?: boolean;
 }
+
 const useStyles = makeStyles(() => ({
   form_control: {
-    width: '100%'
-  }
+    width: '100%',
+  },
 }));
 
-export default function HeaderSearch({column, label, prefix, sortable}: HeaderSearchInterface) {
+export default function HeaderSearch({
+  column,
+  label,
+  prefix,
+  sortable,
+}: HeaderSearchInterface) {
   const router = useRouter();
   const classes = useStyles();
   const [value, setValue] = useState(router.query[column] || '');
-  const subject: Subject<string> = useMemo(() => {
-    return new Subject<string>();
-  }, []);
+  const subject: Subject<string> = useMemo(() => new Subject<string>(), []);
 
   useEffect(() => {
     const subscription = subject
       .pipe(
         distinctUntilChanged(),
-        debounceTime(500)
+        debounceTime(500),
       )
       .subscribe((value) => {
-        const {query, pathname} = router;
+        const {
+          query,
+          pathname,
+        } = router;
         let params = setQueryParam(query, column, value, prefix);
         params = setQueryParam(params, 'page', 1, prefix);
 
         return from(router.push({
           pathname,
-          query: params
-        }))
-      })
+          query: params,
+        }));
+      });
     return () => {
       subscription.unsubscribe();
       subject.complete();
-    }
+    };
   }, []);
 
   const onChange = (event$: ChangeEvent<HTMLInputElement>) => {
-    const value = event$.target.value;
+    const { value } = event$.target;
     setValue(value);
     subject.next(value);
-  }
+  };
 
   const handleClearInput = (event$: MouseEvent<HTMLButtonElement>) => {
     event$.preventDefault();
@@ -76,29 +84,34 @@ export default function HeaderSearch({column, label, prefix, sortable}: HeaderSe
     subject.next('');
   };
 
-  return <TableCell>
-    <Box display="flex">
-      <Box p={1} flexGrow={1} alignSelf="flex-end">
-        <FormControl className={classes.form_control}>
-          <InputLabel htmlFor={`${column}-${label}`}>{label}</InputLabel>
-          <Input
-            id={`${column}-${label}`}
-            value={value}
-            onChange={onChange}
-            endAdornment={
-              (value && <InputAdornment position="end">
-                  <IconButton
-                    aria-label="remove input"
-                    onClick={handleClearInput}
-                  >
-                    <Backspace/>
-                  </IconButton>
-                </InputAdornment>
-              )}
-          />
-        </FormControl>
+  return (
+    <TableCell>
+      <Box display="flex">
+        <Box p={1} flexGrow={1} alignSelf="flex-end">
+          <FormControl className={classes.form_control}>
+            <InputLabel htmlFor={`${column}-${label}`}>{label}</InputLabel>
+            <Input
+              id={`${column}-${label}`}
+              value={value}
+              onChange={onChange}
+              endAdornment={
+              (value && (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="remove input"
+                  onClick={handleClearInput}
+                >
+                  <Backspace />
+                </IconButton>
+              </InputAdornment>
+              )
+              )
+}
+            />
+          </FormControl>
+        </Box>
+        {sortable && <Sortable column={column} prefix={prefix} />}
       </Box>
-      {sortable && <Sortable column={column} prefix={prefix}/>}
-    </Box>
-  </TableCell>;
+    </TableCell>
+  );
 }

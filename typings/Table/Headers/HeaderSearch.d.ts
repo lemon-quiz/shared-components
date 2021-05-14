@@ -5,5 +5,5 @@ interface HeaderSearchInterface {
     prefix?: string;
     sortable?: boolean;
 }
-export default function HeaderSearch({ column, label, prefix, sortable }: HeaderSearchInterface): JSX.Element;
+export default function HeaderSearch({ column, label, prefix, sortable, }: HeaderSearchInterface): JSX.Element;
 export {};

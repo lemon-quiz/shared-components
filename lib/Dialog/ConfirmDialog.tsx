@@ -1,10 +1,10 @@
-import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import React from 'react';
 
 export interface AlertDialogInterface {
   open: boolean;
@@ -16,7 +16,14 @@ export interface AlertDialogInterface {
   cancelShow?: boolean;
 }
 
-export default function ConfirmDialog({open, title, content, submitLabel, cancelLabel, handleClose}: AlertDialogInterface) {
+export default function ConfirmDialog({
+  open,
+  title,
+  content,
+  submitLabel,
+  cancelLabel,
+  handleClose,
+}: AlertDialogInterface) {
   return (
     <Dialog
       open={open}
@@ -26,8 +33,10 @@ export default function ConfirmDialog({open, title, content, submitLabel, cancel
     >
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description"
-                           dangerouslySetInnerHTML={{__html: content}}/>
+        <DialogContentText
+          id="alert-dialog-description"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose(false)} color="primary">

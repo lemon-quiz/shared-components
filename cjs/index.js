@@ -1212,7 +1212,7 @@ var Validator = /** @class */ (function (_super) {
         var _this = this;
         var validator = node.validator;
         var errors = {};
-        if (node.mandatory && !(value !== null && value !== void 0 ? value : node.value) && !node.allowEmpty) {
+        if (node.mandatory && !(value !== null && value !== void 0 ? value : node.value) && !node.allowEmpty && node.type !== 'complex') {
             errors.isEmpty = true;
         }
         if (typeof validator === 'undefined') {
@@ -1375,19 +1375,25 @@ function Sortable(_a) {
                 React__default['default'].createElement(icons.ArrowDropDown, { color: state === 'desc' ? 'secondary' : 'inherit' })))));
 }
 
+function Header(_a) {
+    var column = _a.column, label = _a.label, prefix = _a.prefix, sortable = _a.sortable;
+    return (React__default['default'].createElement(core.TableCell, null,
+        React__default['default'].createElement(core.Box, { display: "flex" },
+            React__default['default'].createElement(core.Box, { p: 1, flexGrow: 1, alignSelf: "flex-end" }, label),
+            sortable && React__default['default'].createElement(Sortable, { column: column, prefix: prefix }))));
+}
+
 var useStyles$2 = styles$1.makeStyles(function () { return ({
     form_control: {
-        width: '100%'
-    }
+        width: '100%',
+    },
 }); });
 function HeaderSearch(_a) {
     var column = _a.column, label = _a.label, prefix = _a.prefix, sortable = _a.sortable;
     var router$1 = router.useRouter();
     var classes = useStyles$2();
     var _b = React.useState(router$1.query[column] || ''), value = _b[0], setValue = _b[1];
-    var subject = React.useMemo(function () {
-        return new rxjs.Subject();
-    }, []);
+    var subject = React.useMemo(function () { return new rxjs.Subject(); }, []);
     React.useEffect(function () {
         var subscription = subject
             .pipe(operators.distinctUntilChanged(), operators.debounceTime(500))
@@ -1397,7 +1403,7 @@ function HeaderSearch(_a) {
             params = setQueryParam(params, 'page', 1, prefix);
             return rxjs.from(router$1.push({
                 pathname: pathname,
-                query: params
+                query: params,
             }));
         });
         return function () {
@@ -1415,47 +1421,40 @@ function HeaderSearch(_a) {
         setValue('');
         subject.next('');
     };
-    return React__default['default'].createElement(core.TableCell, null,
+    return (React__default['default'].createElement(core.TableCell, null,
         React__default['default'].createElement(core.Box, { display: "flex" },
             React__default['default'].createElement(core.Box, { p: 1, flexGrow: 1, alignSelf: "flex-end" },
                 React__default['default'].createElement(core.FormControl, { className: classes.form_control },
                     React__default['default'].createElement(core.InputLabel, { htmlFor: column + "-" + label }, label),
-                    React__default['default'].createElement(core.Input, { id: column + "-" + label, value: value, onChange: onChange, endAdornment: (value && React__default['default'].createElement(core.InputAdornment, { position: "end" },
+                    React__default['default'].createElement(core.Input, { id: column + "-" + label, value: value, onChange: onChange, endAdornment: (value && (React__default['default'].createElement(core.InputAdornment, { position: "end" },
                             React__default['default'].createElement(core.IconButton, { "aria-label": "remove input", onClick: handleClearInput },
-                                React__default['default'].createElement(icons.Backspace, null)))) }))),
-            sortable && React__default['default'].createElement(Sortable, { column: column, prefix: prefix })));
-}
-
-function Header(_a) {
-    var column = _a.column, label = _a.label, prefix = _a.prefix, sortable = _a.sortable;
-    return React__default['default'].createElement(core.TableCell, null,
-        React__default['default'].createElement(core.Box, { display: "flex" },
-            React__default['default'].createElement(core.Box, { p: 1, flexGrow: 1, alignSelf: "flex-end" }, label),
-            sortable && React__default['default'].createElement(Sortable, { column: column, prefix: prefix })));
+                                React__default['default'].createElement(icons.Backspace, null))))) }))),
+            sortable && React__default['default'].createElement(Sortable, { column: column, prefix: prefix }))));
 }
 
 function generateChildren(children, record) {
     return React__default['default'].Children.map(children, function (child) {
         if (React__default['default'].isValidElement(child)) {
-            return React__default['default'].cloneElement(child, { record: record, value: record });
+            return React__default['default'].cloneElement(child, {
+                record: record,
+                value: record,
+            });
         }
         return child;
     });
 }
-var generateHeaders = function (children, prefix) {
-    return React__default['default'].Children.map(children, function (child) {
-        var _a, _b;
-        if (React__default['default'].isValidElement(child)) {
-            if ((_a = child === null || child === void 0 ? void 0 : child.props) === null || _a === void 0 ? void 0 : _a.searchable) {
-                return React__default['default'].createElement(HeaderSearch, { label: child.props.label, prefix: prefix, column: child.props.column, sortable: child.props.sortable });
-            }
-            if (typeof ((_b = child === null || child === void 0 ? void 0 : child.props) === null || _b === void 0 ? void 0 : _b.label) !== undefined) {
-                return React__default['default'].createElement(Header, { label: child.props.label, prefix: prefix, column: child.props.column, sortable: child.props.sortable });
-            }
+var generateHeaders = function (children, prefix) { return React__default['default'].Children.map(children, function (child) {
+    var _a, _b;
+    if (React__default['default'].isValidElement(child)) {
+        if ((_a = child === null || child === void 0 ? void 0 : child.props) === null || _a === void 0 ? void 0 : _a.searchable) {
+            return (React__default['default'].createElement(HeaderSearch, { label: child.props.label, prefix: prefix, column: child.props.column, sortable: child.props.sortable }));
         }
-        return React__default['default'].createElement(core.TableCell, null);
-    });
-};
+        if (typeof ((_b = child === null || child === void 0 ? void 0 : child.props) === null || _b === void 0 ? void 0 : _b.label) !== undefined) {
+            return (React__default['default'].createElement(Header, { label: child.props.label, prefix: prefix, column: child.props.column, sortable: child.props.sortable }));
+        }
+    }
+    return React__default['default'].createElement(core.TableCell, null);
+}); };
 var useStyles$1 = styles.makeStyles({
     table: {
         minWidth: 650,
@@ -1470,7 +1469,7 @@ function AppTable(_a) {
         var query = setQueryParam(currentQuery, 'page', page + 1, prefix);
         router$1.push({
             pathname: pathname,
-            query: query
+            query: query,
         }, undefined, { shallow: true });
     };
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
@@ -1478,9 +1477,7 @@ function AppTable(_a) {
             React__default['default'].createElement(core.Table, { className: classes.table, "aria-label": "simple table", size: "small" },
                 React__default['default'].createElement(core.TableHead, null,
                     React__default['default'].createElement(core.TableRow, null, generateHeaders(children, prefix))),
-                React__default['default'].createElement(core.TableBody, null, resource && (resource.data).map(function (record, index) {
-                    return (React__default['default'].createElement(core.TableRow, { key: (record === null || record === void 0 ? void 0 : record.id) || index, hover: true }, generateChildren(children, record)));
-                })))),
+                React__default['default'].createElement(core.TableBody, null, resource && (resource.data).map(function (record, index) { return (React__default['default'].createElement(core.TableRow, { key: (record === null || record === void 0 ? void 0 : record.id) || index, hover: true }, generateChildren(children, record))); })))),
         React__default['default'].createElement(core.TablePagination, { rowsPerPageOptions: [15, 25, 50, 100], component: "div", count: (resource === null || resource === void 0 ? void 0 : resource.total) || 0, rowsPerPage: (resource === null || resource === void 0 ? void 0 : resource.per_page) || 15, page: (resource === null || resource === void 0 ? void 0 : resource.current_page) - 1 || 0, onChangePage: handlePageChange, onChangeRowsPerPage: function () {
             } })));
 }

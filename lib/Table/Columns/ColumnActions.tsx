@@ -6,8 +6,8 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import ConfirmDialog from '../../Dialog/ConfirmDialog';
+import RoleGuard from '../../Guards/RoleGuard';
 import { ColumnInterface } from '../TableInterface';
-import RoleGuard from "../../Guards/RoleGuard";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

@@ -3,4 +3,4 @@ export interface SortableInterface {
     column: string;
     prefix?: string;
 }
-export default function Sortable({ column, prefix }: SortableInterface): JSX.Element;
+export default function Sortable({ column, prefix, }: SortableInterface): JSX.Element;

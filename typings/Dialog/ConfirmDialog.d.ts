@@ -8,4 +8,4 @@ export interface AlertDialogInterface {
     cancelLabel?: string;
     cancelShow?: boolean;
 }
-export default function ConfirmDialog({ open, title, content, submitLabel, cancelLabel, handleClose }: AlertDialogInterface): JSX.Element;
+export default function ConfirmDialog({ open, title, content, submitLabel, cancelLabel, handleClose, }: AlertDialogInterface): JSX.Element;
