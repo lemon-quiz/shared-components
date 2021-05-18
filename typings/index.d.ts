@@ -1,4 +1,4 @@
-import AppContext from './AppContext';
+import AppContext, { AppConsumer, AppProvider } from './AppContext';
 import ConfirmDialog from './Dialog/ConfirmDialog';
 import Editor from './Editor/Editor';
 import { EditorContext, EditorContextInterface } from './Editor/EditorContext';
@@ -30,5 +30,5 @@ import getPrefixedValues from './utils/getPrefixedValues';
 import getQueryParam from './utils/getQueryParam';
 import getValue from './utils/getValue';
 import setQueryParam from './utils/setQueryParam';
-export { ConfirmDialog, Controls, LineNode, NodeWrapper, AbstractValidator, Validator, EditorContext, Parser, AuthGuard, RoleGuard, Pending, Snackbar, AppTable, Column, ColumnActions, ColumnBoolean, ColumnDate, Header, HeaderSearch, Sortable, AppContext, FormResponse, getPrefixedValues, getQueryParam, getValue, setQueryParam, Editor, CustomNode, };
+export { AppProvider, AppConsumer, ConfirmDialog, Controls, LineNode, NodeWrapper, AbstractValidator, Validator, EditorContext, Parser, AuthGuard, RoleGuard, Pending, Snackbar, AppTable, Column, ColumnActions, ColumnBoolean, ColumnDate, Header, HeaderSearch, Sortable, AppContext, FormResponse, getPrefixedValues, getQueryParam, getValue, setQueryParam, Editor, CustomNode, };
 export type { AppTableInterface, EditorContextInterface, ExpectedRoleObject, ExpectedRoleType, PaginatedResources, LinksEntity, ServicesInterface, ValidatorOptions, NodeInterface, LineInterface, NodeOption, NodeOptions, RadioInterface, ChildrenInterface, ComplexInterface, PageInterface, NodeType, CustomNodeInterface, };

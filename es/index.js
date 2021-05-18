@@ -24,8 +24,8 @@ import moment from 'moment';
 import { FORM_ERROR } from 'final-form';
 
 var AppContext = React.createContext({});
-AppContext.Provider;
-AppContext.Consumer;
+var AppProvider = AppContext.Provider;
+var AppConsumer = AppContext.Consumer;
 
 function ConfirmDialog(_a) {
     var open = _a.open, title = _a.title, content = _a.content, submitLabel = _a.submitLabel, cancelLabel = _a.cancelLabel, handleClose = _a.handleClose;
@@ -1582,5 +1582,5 @@ function getQueryParam(query, param, prefix) {
     return prefix ? query[prefix + "_" + param] : query[param];
 }
 
-export { AbstractValidator, AppContext, AppTable, AuthGuard, Column, ColumnActions, ColumnBoolean, ColumnDate, ConfirmDialog, Controls, CustomNode, Editor, EditorContext, FormResponse, Header, HeaderSearch, LineNode, NodeWrapper, Parser, Pending, RoleGuard, Snackbar, Sortable, Validator, getPrefixedValues, getQueryParam, getValue, setQueryParam };
+export { AbstractValidator, AppConsumer, AppContext, AppProvider, AppTable, AuthGuard, Column, ColumnActions, ColumnBoolean, ColumnDate, ConfirmDialog, Controls, CustomNode, Editor, EditorContext, FormResponse, Header, HeaderSearch, LineNode, NodeWrapper, Parser, Pending, RoleGuard, Snackbar, Sortable, Validator, getPrefixedValues, getQueryParam, getValue, setQueryParam };
 //# sourceMappingURL=index.js.map

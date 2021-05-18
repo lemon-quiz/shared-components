@@ -1,4 +1,4 @@
-import AppContext from './AppContext';
+import AppContext, { AppConsumer, AppProvider } from './AppContext';
 import ConfirmDialog from './Dialog/ConfirmDialog';
 import Editor from './Editor/Editor';
 import { EditorContext, EditorContextInterface } from './Editor/EditorContext';
@@ -43,6 +43,8 @@ import getValue from './utils/getValue';
 import setQueryParam from './utils/setQueryParam';
 
 export {
+  AppProvider,
+  AppConsumer,
   ConfirmDialog,
   Controls,
   LineNode,

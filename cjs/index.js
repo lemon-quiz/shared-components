@@ -62,8 +62,8 @@ var MuiAlert__default = /*#__PURE__*/_interopDefaultLegacy(MuiAlert);
 var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
 
 var AppContext = React__namespace.createContext({});
-AppContext.Provider;
-AppContext.Consumer;
+var AppProvider = AppContext.Provider;
+var AppConsumer = AppContext.Consumer;
 
 function ConfirmDialog(_a) {
     var open = _a.open, title = _a.title, content = _a.content, submitLabel = _a.submitLabel, cancelLabel = _a.cancelLabel, handleClose = _a.handleClose;
@@ -1621,7 +1621,9 @@ function getQueryParam(query, param, prefix) {
 }
 
 exports.AbstractValidator = AbstractValidator;
+exports.AppConsumer = AppConsumer;
 exports.AppContext = AppContext;
+exports.AppProvider = AppProvider;
 exports.AppTable = AppTable;
 exports.AuthGuard = AuthGuard;
 exports.Column = Column;
